@@ -44,10 +44,13 @@ public class SolicitacaoRepository {
     //-- Dar um jeito de não usar loop for com if
     //-- Separar responsabilidades do filtrarPorStatusECategoria()
 
-    public List<Solicitacao> filtrarPorLocalizacao(String localizacao)
-    {
-        return solicitacoes.stream()
-                .filter(s -> s.getLocalizacao().equalsIgnoreCase(localizacao))
-                .collect(Collectors.toList());
+    public List<Solicitacao> filtrarPorLocalizacao(String localizacao) {
+        List<Solicitacao> resultado = new ArrayList<>();
+        for (Solicitacao s : solicitacoes) {
+            if (s.getLocalizacao() == localizacao) {
+                resultado.add(s);
+            }
+        }
+        return resultado;
     }
 }
