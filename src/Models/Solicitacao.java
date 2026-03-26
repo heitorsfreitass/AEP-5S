@@ -37,5 +37,43 @@ public class Solicitacao {
         this.status = novoStatus;
     }
 
+    public String getProtocolo() {
+        return protocolo;
+    }
 
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public String getLocalizacao() {
+        return localizacao;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public Prioridade getPrioridade() {
+        return prioridade;
+    }
+
+    public StatusSolicitacao getStatus() {
+        return status;
+    }
+
+    public Usuario getSolicitante() {
+        return solicitante;
+    }
+
+    public LocalDateTime getDataAbertura() {
+        return dataAbertura;
+    }
+
+    public LocalDateTime getPrazoAlvo() {
+        return prazoAlvo;
+    }
+
+    public List<HistoricoStatus> getHistorico() {
+        return historico;
+    }
 }
