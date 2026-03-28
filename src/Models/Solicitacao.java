@@ -10,6 +10,7 @@ import java.util.List;
 
 public class Solicitacao {
     private String protocolo;
+    private String title;
     private String descricao;
     private String localizacao;
     private LocalDateTime dataAbertura;
@@ -43,6 +44,14 @@ public class Solicitacao {
 
     public String getDescricao() {
         return descricao;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getLocalizacao() {

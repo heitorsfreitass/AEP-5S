@@ -9,11 +9,11 @@ public class MenuPrincipal {
     public void exibir() {
 
         while (true) {
-            System.out.println("\n========== ObservaAção ==========");
-            System.out.println("1 - Sou cidadão");
-            System.out.println(".");
-            System.out.println("2 - Sou servidor");
-            System.out.println(".");
+            System.out.println("\n========== MENU ==========");
+            System.out.println("1 - Painel cidadão");
+            System.out.println("-------------------------------------");
+            System.out.println("2 - Painel servidor");
+            System.out.println("-------------------------------------");
             System.out.println("0 - Sair");
             System.out.print("Escolha: ");
 
@@ -29,7 +29,7 @@ public class MenuPrincipal {
                     break;
                 case "0":
                     System.out.println("Encerrando o sistema. Até logo!");
-                    return; 
+                    return;
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
             }
