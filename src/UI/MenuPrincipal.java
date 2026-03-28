@@ -1,4 +1,38 @@
 package UI;
 
+import java.util.Scanner;
+
 public class MenuPrincipal {
+
+    private Scanner scanner = new Scanner(System.in);
+
+    public void exibir() {
+
+        while (true) {
+            System.out.println("\n========== ObservaAção ==========");
+            System.out.println("1 - Sou cidadão");
+            System.out.println(".");
+            System.out.println("2 - Sou servidor");
+            System.out.println(".");
+            System.out.println("0 - Sair");
+            System.out.print("Escolha: ");
+
+            String opcao = scanner.nextLine();
+
+            // switch verifica o que o usuário digitou e chama o menu certo
+            switch (opcao) {
+                case "1":
+                    new MenuCidadao().exibir();
+                    break;
+                case "2":
+                    new MenuServidor().exibir();
+                    break;
+                case "0":
+                    System.out.println("Encerrando o sistema. Até logo!");
+                    return; 
+                default:
+                    System.out.println("Opção inválida. Tente novamente.");
+            }
+        }
+    }
 }
