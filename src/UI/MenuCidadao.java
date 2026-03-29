@@ -13,7 +13,7 @@ public class MenuCidadao {
         while (true) {
             System.out.println("\n-----------Menu do Cidadão-----------");
             System.out.println("1 - Nova solicitação");
-            System.out.println("2 - Ver minhas solicitações");
+            System.out.println("2 - Ver solicitações");
             System.out.println("0 - Voltar");
             System.out.println("-------------------------------------");
             System.out.print("Escolha: ");
@@ -25,7 +25,7 @@ public class MenuCidadao {
                     System.out.println("Deseja se identificar? (S/N)");
                     String resposta = scanner.nextLine().trim();
                     
-                    //Começa como null aqui, porque se for não precisarmos preencher, e se for sim, vai preencher com o que o usuário digitar
+                    //Começa como null aqui, porque se for "não", não precisarmos preencher, e se for "sim", vai preencher com o que o usuário digitar
                     String solicitacaoNome = null;
                     String solicitacaoContato = null;
 
@@ -39,18 +39,25 @@ public class MenuCidadao {
                         break;
                     }
 
+                    //1. Pergunta a categoria
+                    System.out.println("Categoria (ILUMINACAO, BURACO, LIMPEZA, SAUDE, OUTRO): ");
+                    String solicitacaoCategoria = scanner.nextLine();
+
+                    //2. Localização
+                    System.out.println("Bairro: ");
+                    String solicitacaoBairro = scanner.nextLine();
+
+                    //3. Título e descrição
                     System.out.println("Título da Solicitação: ");
                     String solicitacaoTitle = scanner.nextLine();
                     System.out.println("Descrição da Solicitação: ");
                     String solicitacaoDescription = scanner.nextLine();
-                    System.out.println("Categoria (ILUMINACAO, BURACO, LIMPEZA, SAUDE, OUTRO): ");
-                    String solicitacaoCategoria = scanner.nextLine();
-                    System.out.println("Bairro: ");
-                    String solicitacaoBairro = scanner.nextLine();
+
+                    //4. Prioridade
                     System.out.println("Prioridade (BAIXA, MEDIA, ALTA, URGENTE): ");
                     String solicitacaoPrioridade = scanner.nextLine();
 
-                    // envia em formato estruturado para facilitar migracao futura para DB.
+
                     String descricaoEstruturada = "TITULO::" + solicitacaoTitle + "\nDESCRICAO::" + solicitacaoDescription;
 
                     try {

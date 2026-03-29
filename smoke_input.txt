@@ -1,0 +1,14 @@
+1
+1
+N
+ILUMINACAO
+Centro
+Poste apagado
+Luz da rua apagada ha 2 dias
+ALTA
+2
+0
+2
+1
+0
+0

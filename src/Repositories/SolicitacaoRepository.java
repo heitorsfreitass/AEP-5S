@@ -17,13 +17,10 @@ public class SolicitacaoRepository {
     }
 
     public Solicitacao buscarPorProtocolo(String protocolo) {
-        Solicitacao resultado = null;
-        for (int i = 0; i < solicitacoes.size(); i++) {
-            if (solicitacoes.get(i).getProtocolo().equalsIgnoreCase(protocolo)) {
-                resultado = solicitacoes.get(i);
-            }
-        }
-        return resultado;
+        return solicitacoes.stream()
+                .filter(s -> s.getProtocolo().equalsIgnoreCase(protocolo))
+                .findFirst()
+                .orElse(null);
     }
 
     public List<Solicitacao> listarTodas()
@@ -31,26 +28,22 @@ public class SolicitacaoRepository {
         return solicitacoes;
     }
 
-    public List<Solicitacao> filtrarPorStatusECategoria(StatusSolicitacao status, Categoria categoria) {
-        List<Solicitacao> resultado = new ArrayList<>();
-        for (Solicitacao s : solicitacoes) {
-            if (s.getStatus() == status && s.getCategoria() == categoria) {
-                resultado.add(s);
-            }
-        }
-        return resultado;
+    //métodos divididos para separar responsabilidades
+    public List<Solicitacao> filtrarPorStatus(StatusSolicitacao status) {
+        return solicitacoes.stream()
+                .filter(s -> s.getStatus() == status)
+                .collect(Collectors.toList());
     }
 
-    //-- Dar um jeito de não usar loop for com if
-    //-- Separar responsabilidades do filtrarPorStatusECategoria()
+    public List<Solicitacao> filtrarPorCategoria(Categoria categoria) {
+        return solicitacoes.stream()
+                .filter(s -> s.getCategoria() == categoria)
+                .collect(Collectors.toList());
+    }
 
     public List<Solicitacao> filtrarPorLocalizacao(String localizacao) {
-        List<Solicitacao> resultado = new ArrayList<>();
-        for (Solicitacao s : solicitacoes) {
-            if (s.getLocalizacao() == localizacao) {
-                resultado.add(s);
-            }
-        }
-        return resultado;
+        return solicitacoes.stream()
+                .filter(s -> s.getLocalizacao().equalsIgnoreCase(localizacao))
+                .collect(Collectors.toList());
     }
 }

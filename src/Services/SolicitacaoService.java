@@ -39,11 +39,12 @@ public class SolicitacaoService {
         for (Solicitacao solicitacao : solicitacoes) {
             System.out.println("-------------------------------------");
             System.out.println("Protocolo: " + solicitacao.getProtocolo());
-            System.out.println("Categoria: " + solicitacao.getCategoria());
-            System.out.println("Prioridade: " + solicitacao.getPrioridade());
-            System.out.println("Status: " + solicitacao.getStatus());
             System.out.println("Bairro/Local: " + solicitacao.getLocalizacao());
+            System.out.println("Categoria: " + solicitacao.getCategoria());
+            System.out.println("Status: " + solicitacao.getStatus());
+            System.out.println("Título: " + solicitacao.getTitle());
             System.out.println("Descrição: " + solicitacao.getDescricao());
+            System.out.println("Prioridade: " + solicitacao.getPrioridade());
             System.out.println("Solicitante: " + solicitacao.getSolicitante().getNome());
         }
         System.out.println("-------------------------------------");
