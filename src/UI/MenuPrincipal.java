@@ -22,10 +22,10 @@ public class MenuPrincipal {
             // switch verifica o que o usuário digitou e chama o menu certo
             switch (opcao) {
                 case "1":
-                    new MenuCidadao().exibir();
+                    new MenuCidadao(scanner).exibir();
                     break;
                 case "2":
-                    new MenuServidor().exibir();
+                    new MenuServidor(scanner).exibir();
                     break;
                 case "0":
                     System.out.println("Encerrando o sistema. Até logo!");

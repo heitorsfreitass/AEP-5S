@@ -5,9 +5,14 @@ import Services.SolicitacaoService;
 import java.util.Scanner;
 
 public class MenuCidadao {
-    private final Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner;
     private final SolicitacaoService solicitacaoService = new SolicitacaoService();
 
+    //criei esse construtor para não precisar criar um novo scanner em cada menu, evitar bugs de leitura,
+    //quando um metodo do UI for chamado em outro, o scanner é passado como parâmetro.
+    public MenuCidadao(Scanner scanner) {
+        this.scanner = scanner;
+    }
 
     public void exibir() {
         while (true) {
@@ -58,14 +63,13 @@ public class MenuCidadao {
                     String solicitacaoPrioridade = scanner.nextLine();
 
 
-                    String descricaoEstruturada = "TITULO::" + solicitacaoTitle + "\nDESCRICAO::" + solicitacaoDescription;
-
                     try {
                         solicitacaoService.criarSolicitacao(
                                 solicitacaoNome,
                                 solicitacaoContato,
                                 solicitacaoCategoria,
-                                descricaoEstruturada,
+                                solicitacaoTitle,
+                                solicitacaoDescription,
                                 solicitacaoBairro,
                                 solicitacaoPrioridade
                         );
