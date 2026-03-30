@@ -8,8 +8,14 @@ import java.util.Scanner;
 
 public class MenuServidor {
 
-    private final Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner;
     private final SolicitacaoService solicitacaoService = new SolicitacaoService();
+
+    //criei esse construtor para não precisar criar um novo scanner em cada menu, evitar bugs de leitura,
+    //quando um metodo do UI for chamado em outro, o scanner é passado como parâmetro.
+    public MenuServidor(Scanner scanner) {
+        this.scanner = scanner;
+    }
 
     public void exibir() {
         while (true) {

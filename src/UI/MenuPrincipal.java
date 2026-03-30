@@ -4,7 +4,8 @@ import java.util.Scanner;
 
 public class MenuPrincipal {
 
-    private Scanner scanner = new Scanner(System.in);
+    // mudei pra final ja que agora com os construtores esse scanner aqui nunca vai mudar
+    private final Scanner scanner = new Scanner(System.in);
 
     public void exibir() {
 
