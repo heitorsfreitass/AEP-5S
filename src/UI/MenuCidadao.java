@@ -1,12 +1,17 @@
 package UI;
 
+import Repositories.SolicitacaoRepository;
+import Repositories.SolicitacaoRepositoryInterface;
 import Services.SolicitacaoService;
 
 import java.util.Scanner;
 
 public class MenuCidadao {
     private final Scanner scanner;
-    private final SolicitacaoService solicitacaoService = new SolicitacaoService();
+
+    // agora passa o repository da interface no construtor da service
+    private final SolicitacaoRepositoryInterface repo = new SolicitacaoRepository();
+    private final SolicitacaoService solicitacaoService = new SolicitacaoService(repo);
 
     //criei esse construtor para não precisar criar um novo scanner em cada menu, evitar bugs de leitura,
     //quando um metodo do UI for chamado em outro, o scanner é passado como parâmetro.

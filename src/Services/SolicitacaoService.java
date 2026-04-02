@@ -5,11 +5,16 @@ import Enums.Prioridade;
 import Models.Solicitacao;
 import Models.Usuario;
 import Repositories.SolicitacaoRepository;
+import Repositories.SolicitacaoRepositoryInterface;
 
 import java.util.List;
 
 public class SolicitacaoService {
-    private static final SolicitacaoRepository solicitacaoRepository = new SolicitacaoRepository();
+    private final SolicitacaoRepositoryInterface solicitacaoRepository;
+
+    public SolicitacaoService(SolicitacaoRepositoryInterface solicitacaoRepository) {
+        this.solicitacaoRepository = solicitacaoRepository;
+    }
 
     public void criarSolicitacao(String nome, String contato, String categoriaTexto, String title, String descricao, String localizacao, String prioridadeTexto) {
         Categoria categoria = Categoria.valueOf(categoriaTexto.trim().toUpperCase());

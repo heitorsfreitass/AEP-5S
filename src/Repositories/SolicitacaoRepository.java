@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SolicitacaoRepository {
+public class SolicitacaoRepository implements SolicitacaoRepositoryInterface{
     private List<Solicitacao> solicitacoes = new ArrayList<>();
 
     public void salvar(Solicitacao solicitacao)
