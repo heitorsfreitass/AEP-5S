@@ -10,6 +10,7 @@ public class MenuPrincipal {
     public void exibir() {
 
         while (true) {
+            ConsoleUtils.limparTela();
             System.out.println("\n========== MENU ==========");
             System.out.println("1 - Painel cidadão");
             System.out.println("-------------------------------------");
@@ -30,9 +31,11 @@ public class MenuPrincipal {
                     break;
                 case "0":
                     System.out.println("Encerrando o sistema. Até logo!");
+                    ConsoleUtils.pausar(scanner);
                     return;
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
+                    ConsoleUtils.pausar(scanner);
             }
         }
     }

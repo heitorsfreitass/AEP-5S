@@ -21,6 +21,7 @@ public class MenuCidadao {
 
     public void exibir() {
         while (true) {
+            ConsoleUtils.limparTela();
             System.out.println("\n-----------Menu do Cidadão-----------");
             System.out.println("1 - Nova solicitação");
             System.out.println("2 - Ver solicitações");
@@ -46,6 +47,7 @@ public class MenuCidadao {
                         solicitacaoContato = scanner.nextLine();
                     } else if (!resposta.equalsIgnoreCase("N")) {
                         System.out.println("Resposta inválida. Use S ou N.");
+                        ConsoleUtils.pausar(scanner);
                         break;
                     }
 
@@ -81,16 +83,20 @@ public class MenuCidadao {
                     } catch (IllegalArgumentException e) {
                         System.out.println("Categoria ou prioridade inválida. Confira os valores digitados.");
                     }
+                    ConsoleUtils.pausar(scanner);
                     break;
                 case "2":
                     System.out.println("-----------Solicitações-----------");
                     solicitacaoService.listarSolicitacoes();
+                    ConsoleUtils.pausar(scanner);
                     break;
                 case "0":
                     System.out.println("Voltando ao menu principal...");
+                    ConsoleUtils.pausar(scanner);
                     return; //já volta para o menu principal, que esta executando em loop
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
+                    ConsoleUtils.pausar(scanner);
             }
         }
 

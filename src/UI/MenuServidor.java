@@ -23,6 +23,7 @@ public class MenuServidor {
 
     public void exibir() {
         while (true) {
+            ConsoleUtils.limparTela();
             System.out.println("-----------Menu do Servidor-----------");
             System.out.println("1 - Ver todas as solicitações");
             System.out.println("2 - Atualizar status de solicitação");
@@ -41,9 +42,11 @@ public class MenuServidor {
                     break;
                 case "0":
                     System.out.println("Voltando ao menu principal...");
+                    ConsoleUtils.pausar(scanner);
                     return;
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
+                    ConsoleUtils.pausar(scanner);
             }
         }
     }
@@ -52,6 +55,7 @@ public class MenuServidor {
         List<Solicitacao> lista = solicitacaoService.listarSolicitacoes();
         if (lista.isEmpty()) {
             System.out.println("Nenhuma solicitação encontrada.");
+            ConsoleUtils.pausar(scanner);
             return;
         }
         lista.forEach(s -> System.out.println(
@@ -60,6 +64,7 @@ public class MenuServidor {
                         " | " + s.getStatus() +
                         " | " + s.getLocalizacao()
         ));
+        ConsoleUtils.pausar(scanner);
     }
 
     private void atualizarStatus() {
@@ -69,6 +74,7 @@ public class MenuServidor {
         Solicitacao solicitacao = solicitacaoService.buscarPorProtocolo(protocolo);
         if (solicitacao == null) {
             System.out.println("Solicitação não encontrada.");
+            ConsoleUtils.pausar(scanner);
             return;
         }
 
@@ -80,6 +86,7 @@ public class MenuServidor {
         String comentario = scanner.nextLine().trim();
         if (comentario.isEmpty()) {
             System.out.println("Comentário é obrigatório.");
+            ConsoleUtils.pausar(scanner);
             return;
         }
 
@@ -92,5 +99,6 @@ public class MenuServidor {
         } catch (IllegalArgumentException e) {
             System.out.println("Status inválido. Confira os valores digitados.");
         }
+        ConsoleUtils.pausar(scanner);
     }
 }
