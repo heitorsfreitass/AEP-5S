@@ -98,6 +98,7 @@ public class MenuCidadao {
             System.out.println("Status    : " + s.getStatus());
             System.out.println("Categoria : " + s.getCategoria());
             System.out.println("Bairro    : " + s.getLocalizacao());
+            System.out.println("Descrição : " + s.getDescricao());
             System.out.println("Prioridade: " + s.getPrioridade());
         });
         System.out.println("-------------------------------------");
