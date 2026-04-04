@@ -2,65 +2,55 @@ package Services;
 
 import Enums.Categoria;
 import Enums.Prioridade;
+import Enums.StatusSolicitacao;
 import Models.Solicitacao;
 import Models.Usuario;
-import Repositories.SolicitacaoRepository;
 import Repositories.SolicitacaoRepositoryInterface;
-
 import java.util.List;
 
 public class SolicitacaoService {
+
     private final SolicitacaoRepositoryInterface solicitacaoRepository;
+    private final UsuarioService usuarioService = new UsuarioService();
 
     public SolicitacaoService(SolicitacaoRepositoryInterface solicitacaoRepository) {
         this.solicitacaoRepository = solicitacaoRepository;
     }
 
-    public void criarSolicitacao(String nome, String contato, String categoriaTexto, String title, String descricao, String localizacao, String prioridadeTexto) {
+    // retorna o protocolo gerado para a UI exibir
+    public String criarSolicitacao(String nome, String contato, String categoriaTexto,
+                                   String titulo, String descricao,
+                                   String localizacao, String prioridadeTexto) {
         Categoria categoria = Categoria.valueOf(categoriaTexto.trim().toUpperCase());
         Prioridade prioridade = Prioridade.valueOf(prioridadeTexto.trim().toUpperCase());
 
+        // delega criação do usuario pro UsuarioService
         Usuario solicitante;
         if (nome == null || nome.trim().isEmpty()) {
-            solicitante = new Usuario();
+            solicitante = usuarioService.criarAnonimo();
         } else {
-            solicitante = new Usuario(nome.trim(), contato == null ? "" : contato.trim());
+            solicitante = usuarioService.criarIdentificado(nome, contato);
         }
 
         Solicitacao solicitacao = new Solicitacao(categoria, descricao, localizacao, prioridade, solicitante);
-        solicitacao.setTitle(title == null ? null : title.trim());
+        solicitacao.setTitle(titulo == null ? "" : titulo.trim());
         solicitacaoRepository.salvar(solicitacao);
-
-        System.out.println("Solicitação criada com sucesso! Protocolo: " + solicitacao.getProtocolo());
+        return solicitacao.getProtocolo();
     }
 
+    // só retorna a lista — quem exibe é a UI
     public List<Solicitacao> listarSolicitacoes() {
-        List<Solicitacao> solicitacoes = solicitacaoRepository.listarTodas();
-
-        if (solicitacoes.isEmpty()) {
-            System.out.println("Nenhuma solicitação cadastrada.");
-            return solicitacoes;
-        }
-
-        for (Solicitacao solicitacao : solicitacoes) {
-            System.out.println("-------------------------------------");
-            System.out.println("Protocolo: " + solicitacao.getProtocolo());
-            System.out.println("Bairro/Local: " + solicitacao.getLocalizacao());
-            System.out.println("Categoria: " + solicitacao.getCategoria());
-            System.out.println("Status: " + solicitacao.getStatus());
-            System.out.println("Título: " + solicitacao.getTitle());
-            System.out.println("Descrição: " + solicitacao.getDescricao());
-            System.out.println("Prioridade: " + solicitacao.getPrioridade());
-            System.out.println("Solicitante: " + solicitacao.getSolicitante().getNome());
-        }
-        System.out.println("-------------------------------------");
-        return solicitacoes;
-    }
-
-    public void atualizarStatus(String protocolo, String novoStatus, String comentario, String responsavel) {
+        return solicitacaoRepository.listarTodas();
     }
 
     public Solicitacao buscarPorProtocolo(String protocolo) {
         return solicitacaoRepository.buscarPorProtocolo(protocolo);
+    }
+
+    public void atualizarStatus(String protocolo, String novoStatusTexto,
+                                String comentario, String responsavel) {
+        StatusSolicitacao novoStatus = StatusSolicitacao.valueOf(novoStatusTexto.trim().toUpperCase());
+        Solicitacao solicitacao = solicitacaoRepository.buscarPorProtocolo(protocolo);
+        solicitacao.atualizarStatus(novoStatus, comentario, responsavel);
     }
 }

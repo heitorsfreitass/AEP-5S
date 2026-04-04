@@ -1,14 +1,15 @@
 package UI;
 
+import Repositories.SolicitacaoRepository;
+import Repositories.SolicitacaoRepositoryInterface;
 import java.util.Scanner;
 
 public class MenuPrincipal {
-
-    // mudei pra final ja que agora com os construtores esse scanner aqui nunca vai mudar
     private final Scanner scanner = new Scanner(System.in);
+    // repository criado UMA vez aqui e compartilhado com todos os menus
+    private final SolicitacaoRepositoryInterface repo = new SolicitacaoRepository();
 
     public void exibir() {
-
         while (true) {
             ConsoleUtils.limparTela();
             System.out.println("\n========== MENU ==========");
@@ -21,17 +22,15 @@ public class MenuPrincipal {
 
             String opcao = scanner.nextLine();
 
-            // switch verifica o que o usuário digitou e chama o menu certo
             switch (opcao) {
                 case "1":
-                    new MenuCidadao(scanner).exibir();
+                    new MenuCidadao(scanner, repo).exibir();
                     break;
                 case "2":
-                    new MenuServidor(scanner).exibir();
+                    new MenuServidor(scanner, repo).exibir();
                     break;
                 case "0":
                     System.out.println("Encerrando o sistema. Até logo!");
-                    ConsoleUtils.pausar(scanner);
                     return;
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
