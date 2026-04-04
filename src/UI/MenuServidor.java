@@ -1,24 +1,18 @@
 package UI;
 
-import Repositories.SolicitacaoRepository;
 import Repositories.SolicitacaoRepositoryInterface;
 import Services.SolicitacaoService;
 import Models.Solicitacao;
-
 import java.util.List;
 import java.util.Scanner;
 
 public class MenuServidor {
-
     private final Scanner scanner;
-    // agora passa o repository da interface no construtor da service
-    private final SolicitacaoRepositoryInterface repo = new SolicitacaoRepository();
-    private final SolicitacaoService solicitacaoService = new SolicitacaoService(repo);
+    private final SolicitacaoService solicitacaoService;
 
-    //criei esse construtor para não precisar criar um novo scanner em cada menu, evitar bugs de leitura,
-    //quando um metodo do UI for chamado em outro, o scanner é passado como parâmetro.
-    public MenuServidor(Scanner scanner) {
+    public MenuServidor(Scanner scanner, SolicitacaoRepositoryInterface repo) {
         this.scanner = scanner;
+        this.solicitacaoService = new SolicitacaoService(repo);
     }
 
     public void exibir() {
@@ -42,7 +36,6 @@ public class MenuServidor {
                     break;
                 case "0":
                     System.out.println("Voltando ao menu principal...");
-                    ConsoleUtils.pausar(scanner);
                     return;
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
@@ -79,7 +72,7 @@ public class MenuServidor {
         }
 
         System.out.println("Status atual: " + solicitacao.getStatus());
-        System.out.println("Novo status (TRIAGEM, EM_EXECUCAO, RESOLVIDO, ENCERRADO): ");
+        System.out.print("Novo status (TRIAGEM, EM_EXECUCAO, RESOLVIDO, ENCERRADO): ");
         String novoStatus = scanner.nextLine().trim();
 
         System.out.print("Comentário (obrigatório): ");
