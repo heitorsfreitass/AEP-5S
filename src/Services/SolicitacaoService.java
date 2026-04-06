@@ -68,4 +68,20 @@ public class SolicitacaoService {
         Solicitacao solicitacao = solicitacaoRepository.buscarPorProtocolo(protocolo);
         solicitacao.atualizarStatus(novoStatus, comentario, responsavel);
     }
+
+    public List<Solicitacao> filtrarPorPrioridade(Prioridade prioridade) {
+        return solicitacaoRepository.filtrarPorPrioridade(prioridade);
+    }
+
+    public List<Solicitacao> filtrarPorCategoria(Categoria categoria) {
+        return solicitacaoRepository.filtrarPorCategoria(categoria);
+    }
+
+    public List<Solicitacao> filtrarPorBairro(String bairro) {
+        return solicitacaoRepository.filtrarPorLocalizacao(bairro);
+    }
+
+    public List<Solicitacao> filtrarPorStatus(StatusSolicitacao status) {
+        return solicitacaoRepository.filtrarPorStatus(status);
+    }
 }

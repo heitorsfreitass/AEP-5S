@@ -3,6 +3,7 @@ package Repositories;
 import Enums.Categoria;
 import Enums.StatusSolicitacao;
 import Models.Solicitacao;
+import Enums.Prioridade;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +45,12 @@ public class SolicitacaoRepository implements SolicitacaoRepositoryInterface{
     public List<Solicitacao> filtrarPorLocalizacao(String localizacao) {
         return solicitacoes.stream()
                 .filter(s -> s.getLocalizacao().equalsIgnoreCase(localizacao))
+                .collect(Collectors.toList());
+    }
+
+    public List<Solicitacao> filtrarPorPrioridade(Prioridade prioridade) {
+        return solicitacoes.stream()
+                .filter(s -> s.getPrioridade() == prioridade)
                 .collect(Collectors.toList());
     }
 }

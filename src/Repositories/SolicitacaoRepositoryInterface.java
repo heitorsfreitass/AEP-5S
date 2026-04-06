@@ -3,6 +3,7 @@ package Repositories;
 import Enums.Categoria;
 import Enums.StatusSolicitacao;
 import Models.Solicitacao;
+import Enums.Prioridade;
 
 import java.util.List;
 
@@ -19,4 +20,6 @@ public interface SolicitacaoRepositoryInterface {
     List<Solicitacao> filtrarPorCategoria(Categoria categoria);
 
     List<Solicitacao> filtrarPorLocalizacao(String localizacao);
+
+    List<Solicitacao> filtrarPorPrioridade(Prioridade prioridade);
 }

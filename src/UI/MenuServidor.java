@@ -3,9 +3,12 @@ package UI;
 import Repositories.SolicitacaoRepositoryInterface;
 import Services.SolicitacaoService;
 import Models.Solicitacao;
+import Enums.Prioridade;
+import Enums.Categoria;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MenuServidor {
@@ -96,6 +99,157 @@ public class MenuServidor {
         }
 
         fila.forEach(s -> System.out.println(
+                "[" + s.getPrioridade() + "] " + s.getProtocolo() +
+                        " | Status: " + s.getStatus() +
+                        " | Prazo: " + s.getPrazoAlvo().format(FORMATADOR_DATA) +
+                        " | Bairro: " + s.getLocalizacao()
+        ));
+
+        System.out.println("\n---------- FILTROS ----------");
+        System.out.println("Deseja filtrar? (S/N): ");
+        String desejafiltrar = scanner.nextLine().trim();
+        
+        if (desejafiltrar.equalsIgnoreCase("S")) {
+            aplicarFiltros(fila);
+        }
+        
+         ConsoleUtils.pausar(scanner);
+    }
+
+    private void aplicarFiltros(List<Solicitacao> fila) {
+        List<Solicitacao> listaFiltrada = new ArrayList<>(fila);
+
+        while (true) {
+            ConsoleUtils.limparTela();
+            System.out.println("\n---------- FILA ATUAL (" + listaFiltrada.size() + ") ----------");
+            if (listaFiltrada.isEmpty()) {
+                System.out.println("Nenhuma solicitação com os filtros atuais.");
+            } else {
+                listaFiltrada.forEach(s -> System.out.println(
+                        "[" + s.getPrioridade() + "] " + s.getProtocolo() +
+                                " | Status: " + s.getStatus() +
+                                " | Prazo: " + s.getPrazoAlvo().format(FORMATADOR_DATA) +
+                                " | Bairro: " + s.getLocalizacao()
+                ));
+            }
+
+            System.out.println("\n---------- OPÇÕES DE FILTRO ----------");
+            System.out.println("1 - Filtrar por prioridade");
+            System.out.println("2 - Filtrar por bairro");
+            System.out.println("3 - Filtrar por categoria");
+            System.out.println("4 - Limpar filtros");
+            System.out.println("0 - Voltar");
+            System.out.print("Escolha: ");
+
+            String opcao = scanner.nextLine().trim();
+
+            switch (opcao) {
+                case "1":
+                    listaFiltrada = filtrarPorPrioridade(listaFiltrada);
+                    break;
+                case "2":
+                    listaFiltrada = filtrarPorBairro(listaFiltrada);
+                    break;
+                case "3":
+                    listaFiltrada = filtrarPorCategoria(listaFiltrada);
+                    break;
+                case "4":
+                    listaFiltrada = new ArrayList<>(fila);
+                    System.out.println("Filtros removidos. Exibindo fila completa novamente.");
+                    ConsoleUtils.pausar(scanner);
+                    break;
+                case "0":
+                    return;
+                default:
+                    System.out.println("Opção inválida.");
+                    ConsoleUtils.pausar(scanner);
+            }
+        }
+    }
+
+    private List<Solicitacao> filtrarPorPrioridade(List<Solicitacao> lista) {
+        System.out.println("\nPrioridades disponíveis:");
+        System.out.println("1 - BAIXA");
+        System.out.println("2 - MEDIA");
+        System.out.println("3 - ALTA");
+        System.out.println("4 - URGENTE");
+        System.out.print("Escolha: ");
+        
+        String escolha = scanner.nextLine().trim();
+        Prioridade prioridade = null;
+        
+        switch (escolha) {
+            case "1":
+                prioridade = Prioridade.BAIXA;
+                break;
+            case "2":
+                prioridade = Prioridade.MEDIA;
+                break;
+            case "3":
+                prioridade = Prioridade.ALTA;
+                break;
+            case "4":
+                prioridade = Prioridade.URGENTE;
+                break;
+            default:
+                System.out.println("Opção inválida.");
+                return lista;
+        }
+        
+        return solicitacaoService.filtrarPorPrioridade(prioridade);
+    }
+
+    private List<Solicitacao> filtrarPorBairro(List<Solicitacao> lista) {
+        System.out.print("Informe o bairro: ");
+        String bairro = scanner.nextLine().trim();
+        
+        return solicitacaoService.filtrarPorBairro(bairro);
+    }
+
+    private List<Solicitacao> filtrarPorCategoria(List<Solicitacao> lista) {
+        System.out.println("\nCategorias disponíveis:");
+        System.out.println("1 - ILUMINACAO");
+        System.out.println("2 - BURACO");
+        System.out.println("3 - LIMPEZA");
+        System.out.println("4 - SAUDE");
+        System.out.println("5 - OUTRO");
+        System.out.print("Escolha: ");
+        
+        String escolha = scanner.nextLine().trim();
+        Categoria categoria = null;
+        
+        switch (escolha) {
+            case "1":
+                categoria = Categoria.ILUMINACAO;
+                break;
+            case "2":
+                categoria = Categoria.BURACO;
+                break;
+            case "3":
+                categoria = Categoria.LIMPEZA;
+                break;
+            case "4":
+                categoria = Categoria.SAUDE;
+                break;
+            case "5":
+                categoria = Categoria.OUTRO;
+                break;
+            default:
+                System.out.println("Opção inválida.");
+                return lista;
+        }
+        
+        return solicitacaoService.filtrarPorCategoria(categoria);
+    }
+
+    private void exibirListaFiltrada(List<Solicitacao> lista) {
+        if (lista.isEmpty()) {
+            System.out.println("\nNenhuma solicitação encontrada com os filtros aplicados.");
+            return;
+        }
+        
+        System.out.println("\n---------- RESULTADOS (" + lista.size() + ") ----------");
+        lista.forEach(s -> System.out.println(
                 "[" + s.getPrioridade() + "] " + s.getProtocolo() +
                         " | Status: " + s.getStatus() +
                         " | Prazo: " + s.getPrazoAlvo().format(FORMATADOR_DATA) +
