@@ -6,15 +6,18 @@ import Enums.StatusSolicitacao;
 import Models.Solicitacao;
 import Models.Usuario;
 import Repositories.SolicitacaoRepositoryInterface;
+
 import java.util.List;
 
 public class SolicitacaoService {
 
     private final SolicitacaoRepositoryInterface solicitacaoRepository;
     private final UsuarioService usuarioService = new UsuarioService();
+    private final FilaAtendimentoService filaAtendimentoService;
 
     public SolicitacaoService(SolicitacaoRepositoryInterface solicitacaoRepository) {
         this.solicitacaoRepository = solicitacaoRepository;
+        this.filaAtendimentoService = new FilaAtendimentoService(solicitacaoRepository);
     }
 
     // retorna o protocolo gerado para a UI exibir
@@ -41,6 +44,18 @@ public class SolicitacaoService {
     // só retorna a lista — quem exibe é a UI
     public List<Solicitacao> listarSolicitacoes() {
         return solicitacaoRepository.listarTodas();
+    }
+
+    public List<Solicitacao> listarFilaAtendimentoSla() {
+        return filaAtendimentoService.listarFilaPorSla();
+    }
+
+    public List<Solicitacao> listarPorStatus(StatusSolicitacao status) {
+        return filaAtendimentoService.listarPorStatus(status);
+    }
+
+    public List<Solicitacao> listarOrdenadoPorPrioridade() {
+        return filaAtendimentoService.listarOrdenadoPorPrioridade();
     }
 
     public Solicitacao buscarPorProtocolo(String protocolo) {

@@ -4,9 +4,12 @@ import Repositories.SolicitacaoRepositoryInterface;
 import Services.SolicitacaoService;
 import java.util.List;
 import Models.Solicitacao;
+
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class MenuCidadao {
+    private static final DateTimeFormatter FORMATADOR_DATA = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
     private final Scanner scanner;
     private final SolicitacaoService solicitacaoService;
 
@@ -21,6 +24,7 @@ public class MenuCidadao {
             System.out.println("\n-----------Menu do Cidadão-----------");
             System.out.println("1 - Nova solicitação");
             System.out.println("2 - Ver solicitações");
+            System.out.println("3 - Consultar por protocolo");
             System.out.println("0 - Voltar");
             System.out.println("-------------------------------------");
             System.out.print("Escolha: ");
@@ -33,6 +37,9 @@ public class MenuCidadao {
                     break;
                 case "2":
                     verSolicitacoes();
+                    break;
+                case "3":
+                    consultarPorProtocolo();
                     break;
                 case "0":
                     System.out.println("Voltando ao menu principal...");
@@ -91,17 +98,42 @@ public class MenuCidadao {
             ConsoleUtils.pausar(scanner);
             return;
         }
-        lista.forEach(s -> {
-            System.out.println("-------------------------------------");
-            System.out.println("Protocolo : " + s.getProtocolo());
-            System.out.println("Título    : " + s.getTitle());
-            System.out.println("Status    : " + s.getStatus());
-            System.out.println("Categoria : " + s.getCategoria());
-            System.out.println("Bairro    : " + s.getLocalizacao());
-            System.out.println("Descrição : " + s.getDescricao());
-            System.out.println("Prioridade: " + s.getPrioridade());
-        });
+        lista.forEach(s -> System.out.println(exibirLinhaDashboard(s)));
+        ConsoleUtils.pausar(scanner);
+    }
+
+    private void consultarPorProtocolo() {
+        System.out.print("Informe o protocolo: ");
+        String protocolo = scanner.nextLine().trim();
+
+        Solicitacao solicitacao = solicitacaoService.buscarPorProtocolo(protocolo);
+        if (solicitacao == null) {
+            System.out.println("Solicitação não encontrada para o protocolo informado.");
+            ConsoleUtils.pausar(scanner);
+            return;
+        }
+
+        exibirDetalhesSolicitacao(solicitacao);
         System.out.println("-------------------------------------");
         ConsoleUtils.pausar(scanner);
+    }
+
+    private void exibirDetalhesSolicitacao(Solicitacao solicitacao) {
+        System.out.println("-------------------------------------");
+        System.out.println("Protocolo : " + solicitacao.getProtocolo());
+        System.out.println("Título    : " + solicitacao.getTitle());
+        System.out.println("Status    : " + solicitacao.getStatus());
+        System.out.println("Categoria : " + solicitacao.getCategoria());
+        System.out.println("Bairro    : " + solicitacao.getLocalizacao());
+        System.out.println("Descrição : " + solicitacao.getDescricao());
+        System.out.println("Prioridade: " + solicitacao.getPrioridade());
+        System.out.println("Prazo SLA : " + solicitacao.getPrazoAlvo().format(FORMATADOR_DATA));
+    }
+
+    private String exibirLinhaDashboard(Solicitacao solicitacao) {
+        return "[" + solicitacao.getPrioridade() + "] " + solicitacao.getProtocolo() +
+                " | Status: " + solicitacao.getStatus() +
+                " | Prazo: " + solicitacao.getPrazoAlvo().format(FORMATADOR_DATA) +
+                " | Bairro: " + solicitacao.getLocalizacao();
     }
 }

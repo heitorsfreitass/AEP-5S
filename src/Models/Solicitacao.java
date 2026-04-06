@@ -30,6 +30,7 @@ public class Solicitacao {
         this.solicitante = solicitante;
         this.status = StatusSolicitacao.ABERTO;
         this.dataAbertura = LocalDateTime.now();
+        this.prazoAlvo = this.dataAbertura.plusHours(prioridade.getSlaHoras());
         this.historico = new ArrayList<>();
     }
 
@@ -85,4 +86,6 @@ public class Solicitacao {
     public List<HistoricoStatus> getHistorico() {
         return historico;
     }
+    
+    
 }
