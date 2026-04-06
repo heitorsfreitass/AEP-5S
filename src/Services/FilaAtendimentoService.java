@@ -4,7 +4,6 @@ import Enums.Prioridade;
 import Enums.StatusSolicitacao;
 import Models.Solicitacao;
 import Repositories.SolicitacaoRepositoryInterface;
-import Enums.Categoria;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -63,41 +62,6 @@ public class FilaAtendimentoService {
         return ativas;
     }
 
-    public List<Solicitacao> filtrarPorPrioridade(List<Solicitacao> solicitacoes, Prioridade prioridade) {
-        List<Solicitacao> filtradas = new ArrayList<>();
-
-        for (Solicitacao solicitacao : solicitacoes) {
-            if (solicitacao.getPrioridade() == prioridade) {
-                filtradas.add(solicitacao);
-            }
-        }
-
-        return filtradas;
-    }
-
-    public List<Solicitacao> filtrarPorBairro(List<Solicitacao> solicitacoes, String bairro) {
-        List<Solicitacao> filtradas = new ArrayList<>();
-
-        for (Solicitacao solicitacao : solicitacoes) {
-            if (solicitacao.getLocalizacao().equalsIgnoreCase(bairro.trim())) {
-                filtradas.add(solicitacao);
-            }
-        }
-
-        return filtradas;
-    }
-
-    public List<Solicitacao> filtrarPorCategoria(List<Solicitacao> solicitacoes, Categoria categoria) {
-        List<Solicitacao> filtradas = new ArrayList<>();
-
-        for (Solicitacao solicitacao : solicitacoes) {
-            if (solicitacao.getCategoria() == categoria) {
-                filtradas.add(solicitacao);
-            }
-        }
-
-        return filtradas;
-    }
 
     private int pesoPrioridade(Prioridade prioridade) {
         switch (prioridade) {

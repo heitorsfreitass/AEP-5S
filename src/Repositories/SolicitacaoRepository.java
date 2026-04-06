@@ -1,19 +1,25 @@
 package Repositories;
 
 import Enums.Categoria;
+import Enums.Prioridade;
 import Enums.StatusSolicitacao;
 import Models.Solicitacao;
-import Enums.Prioridade;
+import Storage.SolicitacaoTxtStorage;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SolicitacaoRepository implements SolicitacaoRepositoryInterface{
+public class SolicitacaoRepository implements SolicitacaoRepositoryInterface {
     private List<Solicitacao> solicitacoes = new ArrayList<>();
+    // Implementação de arquivo extraída para reduzir responsabilidade do repository.
+    private final SolicitacaoTxtStorage storage;
 
-    public void salvar(Solicitacao solicitacao)
-    {
+    public SolicitacaoRepository() {
+        this.storage = new SolicitacaoTxtStorage();
+    }
+
+    public void salvar(Solicitacao solicitacao) {
         solicitacoes.add(solicitacao);
     }
 
@@ -24,12 +30,11 @@ public class SolicitacaoRepository implements SolicitacaoRepositoryInterface{
                 .orElse(null);
     }
 
-    public List<Solicitacao> listarTodas()
-    {
+    public List<Solicitacao> listarTodas() {
         return solicitacoes;
     }
 
-    //métodos divididos para separar responsabilidades
+    // metodos divididos para separar responsabilidades
     public List<Solicitacao> filtrarPorStatus(StatusSolicitacao status) {
         return solicitacoes.stream()
                 .filter(s -> s.getStatus() == status)
@@ -52,5 +57,16 @@ public class SolicitacaoRepository implements SolicitacaoRepositoryInterface{
         return solicitacoes.stream()
                 .filter(s -> s.getPrioridade() == prioridade)
                 .collect(Collectors.toList());
+    }
+
+    public void salvarEmArquivo(String nomeArquivo) {
+        // Apenas delega a escrita: regra de negócio continua no service.
+        storage.salvar(nomeArquivo, solicitacoes);
+    }
+
+    public int carregarDeArquivo(String nomeArquivo) {
+        // Carrega do TXT e substitui a lista em memória compartilhada pelos menus.
+        solicitacoes = storage.carregar(nomeArquivo);
+        return solicitacoes.size();
     }
 }

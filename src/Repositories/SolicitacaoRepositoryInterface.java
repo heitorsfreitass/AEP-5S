@@ -22,4 +22,8 @@ public interface SolicitacaoRepositoryInterface {
     List<Solicitacao> filtrarPorLocalizacao(String localizacao);
 
     List<Solicitacao> filtrarPorPrioridade(Prioridade prioridade);
+
+    void salvarEmArquivo(String nomeArquivo);
+
+    int carregarDeArquivo(String nomeArquivo);
 }

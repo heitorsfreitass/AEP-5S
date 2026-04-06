@@ -4,7 +4,7 @@ import Enums.StatusSolicitacao;
 
 import java.time.LocalDateTime;
 
-public class HistoricoStatus {
+public class HistoricoStatus{
     private String comentario;
     private String responsavel;
     private LocalDateTime dataHora;

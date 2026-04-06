@@ -27,7 +27,7 @@ public class SolicitacaoService {
         Categoria categoria = Categoria.valueOf(categoriaTexto.trim().toUpperCase());
         Prioridade prioridade = Prioridade.valueOf(prioridadeTexto.trim().toUpperCase());
 
-        // delega criação do usuario pro UsuarioService
+        // delega criacao do usuario pro UsuarioService
         Usuario solicitante;
         if (nome == null || nome.trim().isEmpty()) {
             solicitante = usuarioService.criarAnonimo();
@@ -41,7 +41,7 @@ public class SolicitacaoService {
         return solicitacao.getProtocolo();
     }
 
-    // só retorna a lista — quem exibe é a UI
+    // so retorna a lista - quem exibe e a UI
     public List<Solicitacao> listarSolicitacoes() {
         return solicitacaoRepository.listarTodas();
     }
@@ -50,13 +50,6 @@ public class SolicitacaoService {
         return filaAtendimentoService.listarFilaPorSla();
     }
 
-    public List<Solicitacao> listarPorStatus(StatusSolicitacao status) {
-        return filaAtendimentoService.listarPorStatus(status);
-    }
-
-    public List<Solicitacao> listarOrdenadoPorPrioridade() {
-        return filaAtendimentoService.listarOrdenadoPorPrioridade();
-    }
 
     public Solicitacao buscarPorProtocolo(String protocolo) {
         return solicitacaoRepository.buscarPorProtocolo(protocolo);
@@ -81,7 +74,11 @@ public class SolicitacaoService {
         return solicitacaoRepository.filtrarPorLocalizacao(bairro);
     }
 
-    public List<Solicitacao> filtrarPorStatus(StatusSolicitacao status) {
-        return solicitacaoRepository.filtrarPorStatus(status);
+    public int carregarSolicitacoes(String nomeArquivo) {
+        return solicitacaoRepository.carregarDeArquivo(nomeArquivo);
+    }
+
+    public void salvarSolicitacoes(String nomeArquivo) {
+        solicitacaoRepository.salvarEmArquivo(nomeArquivo);
     }
 }
