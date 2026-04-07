@@ -275,6 +275,7 @@ public class MenuCidadao {
 
     private String exibirLinhaDashboard(Solicitacao solicitacao) {
         return "[" + solicitacao.getPrioridade() + "] " + solicitacao.getProtocolo() +
+                " | Categoria: " + solicitacao.getCategoria() +
                 " | Status: " + solicitacao.getStatus() +
                 " | Prazo: " + solicitacao.getPrazoAlvo().format(FORMATADOR_DATA) +
                 " | Bairro: " + solicitacao.getLocalizacao();
