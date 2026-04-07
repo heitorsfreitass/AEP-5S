@@ -5,5 +5,8 @@ public enum Categoria {
     BURACO,
     LIMPEZA,
     SAUDE,
+    ASSEDIO,
+    INJURIA,
+    CRIME,
     OUTRO
 }

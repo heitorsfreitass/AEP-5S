@@ -188,3 +188,16 @@ h.0.comentario=Queixa registrada para avaliacao da fiscalizacao.
 h.0.responsavel=Servidor J
 h.0.dataHora=2026-04-06T18:03:20.796411100
 ---
+protocolo=OA-2026-99E03E
+title=Teste categoria
+descricao=Teste de categoria nova
+localizacao=CENTRO
+dataAbertura=2026-04-07T19:48:09.761221600
+prazoAlvo=2026-04-10T19:48:09.761221600
+categoria=ASSEDIO
+prioridade=BAIXA
+status=ABERTO
+solicitanteNome=Anônimo
+solicitanteContato=
+historicoCount=0
+---

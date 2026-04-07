@@ -57,8 +57,8 @@ public class MenuPrincipal {
         );
 
         String p5 = solicitacaoService.criarSolicitacao(
-                "", "", "OUTRO",
-                "Denuncia anonima", "Relato de irregularidade administrativa para averiguacao.",
+                "", "", "ASSEDIO",
+                "Assedio em espaco publico", "Relato anonimo de assedio recorrente em ponto de onibus.",
                 "ZONA04", "BAIXA"
         );
 
@@ -81,14 +81,14 @@ public class MenuPrincipal {
         );
 
         String p9 = solicitacaoService.criarSolicitacao(
-                "Patricia Souza", "(11) 94444-5656", "SAUDE",
-                "Falta de medicamentos", "Relato de falta de medicamentos basicos no posto.",
+                "Patricia Souza", "(11) 94444-5656", "INJURIA",
+                "Injuria em atendimento", "Registro de injuria verbal durante atendimento presencial.",
                 "ZONA06", "URGENTE"
         );
 
         String p10 = solicitacaoService.criarSolicitacao(
-                "Rafael Gomes", "(11) 93333-7878", "OUTRO",
-                "Ruido noturno", "Queixa de ruido excessivo em area residencial apos as 22h.",
+                "Rafael Gomes", "(11) 93333-7878", "CRIME",
+                "Suspeita de crime", "Comunicacao de atividade criminosa recorrente na regiao.",
                 "ZONA04", "BAIXA"
         );
 

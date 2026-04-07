@@ -7,6 +7,7 @@ import Models.Solicitacao;
 import Models.Usuario;
 import Repositories.SolicitacaoRepositoryInterface;
 
+import java.text.Normalizer;
 import java.util.List;
 
 public class SolicitacaoService {
@@ -24,7 +25,7 @@ public class SolicitacaoService {
     public String criarSolicitacao(String nome, String contato, String categoriaTexto,
                                    String titulo, String descricao,
                                    String localizacao, String prioridadeTexto) {
-        Categoria categoria = Categoria.valueOf(categoriaTexto.trim().toUpperCase());
+        Categoria categoria = parseCategoria(categoriaTexto);
         Prioridade prioridade = Prioridade.valueOf(prioridadeTexto.trim().toUpperCase());
 
         // delega criacao do usuario pro UsuarioService
@@ -80,5 +81,19 @@ public class SolicitacaoService {
 
     public void salvarSolicitacoes(String nomeArquivo) {
         solicitacaoRepository.salvarEmArquivo(nomeArquivo);
+    }
+
+    private Categoria parseCategoria(String categoriaTexto) {
+        if (categoriaTexto == null) {
+            throw new IllegalArgumentException("Categoria invalida");
+        }
+
+        String normalizada = Normalizer.normalize(categoriaTexto, Normalizer.Form.NFD)
+                .replaceAll("\\p{M}", "")
+                .trim()
+                .toUpperCase()
+                .replace(' ', '_');
+
+        return Categoria.valueOf(normalizada);
     }
 }

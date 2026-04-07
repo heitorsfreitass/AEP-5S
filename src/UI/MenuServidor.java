@@ -7,6 +7,7 @@ import Enums.Prioridade;
 import Enums.Categoria;
 
 import java.time.format.DateTimeFormatter;
+import java.text.Normalizer;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -207,38 +208,17 @@ public class MenuServidor {
     }
 
     private List<Solicitacao> filtrarPorCategoria(List<Solicitacao> lista) {
-        System.out.println("\nCategorias disponíveis:");
-        System.out.println("1 - ILUMINACAO");
-        System.out.println("2 - BURACO");
-        System.out.println("3 - LIMPEZA");
-        System.out.println("4 - SAUDE");
-        System.out.println("5 - OUTRO");
-        System.out.print("Escolha (INFORME O NÚMERO): ");
-        
+        System.out.println("\nCategorias disponiveis:");
+        exibirCategoriasDisponiveis();
+        System.out.print("Escolha (numero ou nome): ");
+
         String escolha = scanner.nextLine().trim();
-        Categoria categoria = null;
-        
-        switch (escolha) {
-            case "1":
-                categoria = Categoria.ILUMINACAO;
-                break;
-            case "2":
-                categoria = Categoria.BURACO;
-                break;
-            case "3":
-                categoria = Categoria.LIMPEZA;
-                break;
-            case "4":
-                categoria = Categoria.SAUDE;
-                break;
-            case "5":
-                categoria = Categoria.OUTRO;
-                break;
-            default:
-                System.out.println("Opção inválida.");
-                return lista;
+        Categoria categoria = obterCategoriaPorEscolha(escolha);
+        if (categoria == null) {
+            System.out.println("Opcao invalida.");
+            return lista;
         }
-        
+
         return solicitacaoService.filtrarPorCategoria(categoria);
     }
 
@@ -302,5 +282,35 @@ public class MenuServidor {
             solicitacao.getHistorico().forEach(item -> System.out.println("- " + item));
         }
         System.out.println("--------------------------------------");
+    }
+
+    private void exibirCategoriasDisponiveis() {
+        Categoria[] categorias = Categoria.values();
+        for (int i = 0; i < categorias.length; i++) {
+            System.out.println((i + 1) + " - " + categorias[i]);
+        }
+    }
+
+    private Categoria obterCategoriaPorEscolha(String escolha) {
+        Categoria[] categorias = Categoria.values();
+        try {
+            int indice = Integer.parseInt(escolha);
+            if (indice >= 1 && indice <= categorias.length) {
+                return categorias[indice - 1];
+            }
+        } catch (NumberFormatException ignored) {
+            // Se nao for numero, tenta por nome do enum.
+        }
+
+        try {
+            String normalizada = Normalizer.normalize(escolha, Normalizer.Form.NFD)
+                    .replaceAll("\\p{M}", "")
+                    .trim()
+                    .toUpperCase()
+                    .replace(' ', '_');
+            return Categoria.valueOf(normalizada);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 }
