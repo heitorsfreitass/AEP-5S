@@ -173,7 +173,7 @@ public class MenuServidor {
         System.out.println("2 - MEDIA");
         System.out.println("3 - ALTA");
         System.out.println("4 - URGENTE");
-        System.out.print("Escolha: ");
+        System.out.print("Escolha (INFORME O NÚMERO): ");
         
         String escolha = scanner.nextLine().trim();
         Prioridade prioridade = null;
@@ -213,7 +213,7 @@ public class MenuServidor {
         System.out.println("3 - LIMPEZA");
         System.out.println("4 - SAUDE");
         System.out.println("5 - OUTRO");
-        System.out.print("Escolha: ");
+        System.out.print("Escolha (INFORME O NÚMERO): ");
         
         String escolha = scanner.nextLine().trim();
         Categoria categoria = null;
