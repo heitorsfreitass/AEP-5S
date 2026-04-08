@@ -26,7 +26,7 @@ public class SolicitacaoService {
                                    String titulo, String descricao,
                                    String localizacao, String prioridadeTexto) {
         Categoria categoria = parseCategoria(categoriaTexto);
-        Prioridade prioridade = Prioridade.valueOf(prioridadeTexto.trim().toUpperCase());
+        Prioridade prioridade = parsePrioridade(prioridadeTexto);
 
         // delega criacao do usuario pro UsuarioService
         Usuario solicitante;
@@ -88,12 +88,47 @@ public class SolicitacaoService {
             throw new IllegalArgumentException("Categoria invalida");
         }
 
-        String normalizada = Normalizer.normalize(categoriaTexto, Normalizer.Form.NFD)
+        String entrada = categoriaTexto.trim();
+        if (entrada.isEmpty()) {
+            throw new IllegalArgumentException("Categoria invalida");
+        }
+
+        try {
+            int indice = Integer.parseInt(entrada);
+            Categoria[] categorias = Categoria.values();
+            if (indice >= 1 && indice <= categorias.length) {
+                return categorias[indice - 1];
+            }
+        } catch (NumberFormatException ignored) {
+            // Se nao for numero, tenta por nome do enum.
+        }
+
+        String normalizada = Normalizer.normalize(entrada, Normalizer.Form.NFD)
                 .replaceAll("\\p{M}", "")
-                .trim()
                 .toUpperCase()
                 .replace(' ', '_');
 
-        return Categoria.valueOf(normalizada);
+        try {
+            return Categoria.valueOf(normalizada);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Categoria invalida");
+        }
+    }
+
+    private Prioridade parsePrioridade(String prioridadeTexto) {
+        if (prioridadeTexto == null) {
+            throw new IllegalArgumentException("Prioridade invalida");
+        }
+
+        String normalizada = prioridadeTexto.trim().toUpperCase();
+        if (normalizada.isEmpty()) {
+            throw new IllegalArgumentException("Prioridade invalida");
+        }
+
+        try {
+            return Prioridade.valueOf(normalizada);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Prioridade invalida");
+        }
     }
 }

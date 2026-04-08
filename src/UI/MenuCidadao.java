@@ -91,7 +91,9 @@ public class MenuCidadao {
             );
             System.out.println("Solicitação criada com sucesso! Protocolo: " + protocolo);
         } catch (IllegalArgumentException e) {
-            System.out.println("Categoria ou prioridade inválida. Confira os valores digitados.");
+            System.out.println(e.getMessage() == null || e.getMessage().isBlank()
+                    ? "Categoria ou prioridade inválida. Confira os valores digitados."
+                    : e.getMessage());
         }
         ConsoleUtils.pausar(scanner);
     }
@@ -171,7 +173,7 @@ public class MenuCidadao {
         System.out.print("Escolha (INFORME O NÚMERO): ");
         
         String escolha = scanner.nextLine().trim();
-        Prioridade prioridade = null;
+        Prioridade prioridade;
         
         switch (escolha) {
             case "1":
@@ -191,14 +193,22 @@ public class MenuCidadao {
                 return lista;
         }
         
-        return solicitacaoService.filtrarPorPrioridade(prioridade);
+        return lista.stream()
+                .filter(s -> s.getPrioridade() == prioridade)
+                .toList();
     }
 
     private List<Solicitacao> filtrarPorBairro(List<Solicitacao> lista) {
         System.out.print("Informe o bairro: ");
         String bairro = scanner.nextLine().trim();
         
-        return solicitacaoService.filtrarPorBairro(bairro);
+        List<Solicitacao> filtradas = new ArrayList<>();
+        for (Solicitacao solicitacao : lista) {
+            if (solicitacao.getLocalizacao() != null && solicitacao.getLocalizacao().equalsIgnoreCase(bairro)) {
+                filtradas.add(solicitacao);
+            }
+        }
+        return filtradas;
     }
 
     private List<Solicitacao> filtrarPorCategoria(List<Solicitacao> lista) {
@@ -213,17 +223,9 @@ public class MenuCidadao {
             return lista;
         }
 
-        return solicitacaoService.filtrarPorCategoria(categoria);
-    }
-
-    private void exibirListaFiltrada(List<Solicitacao> lista) {
-        if (lista.isEmpty()) {
-            System.out.println("\nNenhuma solicitação encontrada com os filtros aplicados.");
-            return;
-        }
-
-        System.out.println("\n---------- RESULTADOS (" + lista.size() + ") ----------");
-        lista.forEach(s -> System.out.println(exibirLinhaDashboard(s)));
+        return lista.stream()
+                .filter(s -> s.getCategoria() == categoria)
+                .toList();
     }
 
     private void consultarPorProtocolo() {

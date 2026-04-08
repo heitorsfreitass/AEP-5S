@@ -177,7 +177,7 @@ public class MenuServidor {
         System.out.print("Escolha (INFORME O NÚMERO): ");
         
         String escolha = scanner.nextLine().trim();
-        Prioridade prioridade = null;
+        Prioridade prioridade;
         
         switch (escolha) {
             case "1":
@@ -197,14 +197,18 @@ public class MenuServidor {
                 return lista;
         }
         
-        return solicitacaoService.filtrarPorPrioridade(prioridade);
+        return lista.stream()
+                .filter(s -> s.getPrioridade() == prioridade)
+                .toList();
     }
 
     private List<Solicitacao> filtrarPorBairro(List<Solicitacao> lista) {
         System.out.print("Informe o bairro: ");
         String bairro = scanner.nextLine().trim();
         
-        return solicitacaoService.filtrarPorBairro(bairro);
+        return lista.stream()
+                .filter(s -> s.getLocalizacao() != null && s.getLocalizacao().equalsIgnoreCase(bairro))
+                .toList();
     }
 
     private List<Solicitacao> filtrarPorCategoria(List<Solicitacao> lista) {
@@ -219,24 +223,9 @@ public class MenuServidor {
             return lista;
         }
 
-        return solicitacaoService.filtrarPorCategoria(categoria);
-    }
-
-    private void exibirListaFiltrada(List<Solicitacao> lista) {
-        if (lista.isEmpty()) {
-            System.out.println("\nNenhuma solicitação encontrada com os filtros aplicados.");
-            return;
-        }
-        
-        System.out.println("\n---------- RESULTADOS (" + lista.size() + ") ----------");
-        lista.forEach(s -> System.out.println(
-                "[" + s.getPrioridade() + "] " + s.getProtocolo() +
-                        " | Status: " + s.getStatus() +
-                        " | Prazo: " + s.getPrazoAlvo().format(FORMATADOR_DATA) +
-                        " | Bairro: " + s.getLocalizacao()
-        ));
-
-        ConsoleUtils.pausar(scanner);
+        return lista.stream()
+                .filter(s -> s.getCategoria() == categoria)
+                .toList();
     }
 
     private void consultarAtendimentoEspecifico() {

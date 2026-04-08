@@ -193,11 +193,30 @@ public class SolicitacaoTxtStorage {
         if (valor == null) {
             return null;
         }
-        String resultado = valor;
-        resultado = resultado.replace("\\n", "\n");
-        resultado = resultado.replace("\\r", "\r");
-        resultado = resultado.replace("\\\\", "\\");
-        return resultado;
+        StringBuilder resultado = new StringBuilder();
+        for (int i = 0; i < valor.length(); i++) {
+            char atual = valor.charAt(i);
+            if (atual == '\\' && i + 1 < valor.length()) {
+                char proximo = valor.charAt(++i);
+                switch (proximo) {
+                    case 'n':
+                        resultado.append('\n');
+                        break;
+                    case 'r':
+                        resultado.append('\r');
+                        break;
+                    case '\\':
+                        resultado.append('\\');
+                        break;
+                    default:
+                        resultado.append(proximo);
+                        break;
+                }
+            } else {
+                resultado.append(atual);
+            }
+        }
+        return resultado.toString();
     }
 
     private void definirCampo(Object alvo, String nomeCampo, Object valor) {
