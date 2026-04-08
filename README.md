@@ -67,17 +67,18 @@ src/
 - JDK instalado
 - Terminal (PowerShell, CMD ou similar)
 
-## Como executar
+## Como executar (Windows)
 
-1. Abra o terminal na pasta do projeto.
-2. Compile os fontes.
-3. Execute a classe principal.
+1. Clone o repositorio:
 
 ```powershell
-Set-Location "C:\Users\carva\Desktop\AEP5s\AEP-5S"
-if (-not (Test-Path bin)) { New-Item -ItemType Directory -Path bin | Out-Null }
-javac -d bin (Get-ChildItem -Recurse -Filter *.java | ForEach-Object { $_.FullName })
-java -cp bin Main
+git clone https://github.com/heitorsfreitass/AEP-5S.git
+```
+
+2. Entre na pasta do projeto clonado e execute no PowerShell:
+
+```powershell
+New-Item -ItemType Directory -Path ".\bin" -Force | Out-Null; javac -d ".\bin" (Get-ChildItem -Path ".\src" -Recurse -Filter "*.java").FullName; java -cp ".\bin" Main
 ```
 
 ## Fluxo rapido de uso
