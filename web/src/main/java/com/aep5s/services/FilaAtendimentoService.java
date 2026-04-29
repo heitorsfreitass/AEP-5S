@@ -3,12 +3,16 @@ package com.aep5s.services;
 import com.aep5s.enums.Prioridade;
 import com.aep5s.enums.StatusSolicitacao;
 import com.aep5s.models.Solicitacao;
+import com.aep5s.repositories.SolicitacaoRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
+@Service
 public class FilaAtendimentoService {
     private static final EnumSet<StatusSolicitacao> STATUS_ATIVOS = EnumSet.of(
             StatusSolicitacao.ABERTO,
@@ -16,51 +20,44 @@ public class FilaAtendimentoService {
             StatusSolicitacao.EM_EXECUCAO
     );
 
+    private final SolicitacaoRepository solicitacaoRepository;
 
-    private final SolicitacaoRepositoryInterface solicitacaoRepository;
-
-    public FilaAtendimentoService(SolicitacaoRepositoryInterface solicitacaoRepository) {
-        this.solicitacaoRepository = Objects.requireNonNull(solicitacaoRepository, "Repositorio de solicitacoes nao pode ser nulo.");
+    public FilaAtendimentoService(SolicitacaoRepository solicitacaoRepository) {
+        this.solicitacaoRepository = solicitacaoRepository;
     }
 
     public List<Solicitacao> listarOrdenadoPorPrioridade() {
-        List<Solicitacao> ordenadas = new ArrayList<>(solicitacaoRepository.listarTodas());
-        ordenadas.sort((a, b) -> Integer.compare(pesoPrioridade(b.getPrioridade()), pesoPrioridade(a.getPrioridade())));
-        return ordenadas;
+        return solicitacaoRepository.findAll()
+                .stream()
+                .sorted((a, b) -> Integer.compare(
+                        pesoPrioridade(b.getPrioridade()),
+                        pesoPrioridade(a.getPrioridade())
+                ))
+                .collect(Collectors.toList());
     }
 
     public List<Solicitacao> listarPorStatus(StatusSolicitacao status) {
-        List<Solicitacao> filtradas = new ArrayList<>();
-
-        for (Solicitacao solicitacao : solicitacaoRepository.listarTodas()) {
-            if (solicitacao.getStatus() == status) {
-                filtradas.add(solicitacao);
-            }
-        }
-
-        return filtradas;
+        return solicitacaoRepository.findAll()
+                .stream()
+                .filter(s -> s.getStatus() == status)
+                .collect(Collectors.toList());
     }
 
     public List<Solicitacao> listarFilaPorSla() {
-        List<Solicitacao> ativas = new ArrayList<>();
+        return solicitacaoRepository.findAll()
+                .stream()
+                .filter(s -> STATUS_ATIVOS.contains(s.getStatus()))
+                .sorted((a, b) -> {
+                    int prazo = a.getPrazoAlvo().compareTo(b.getPrazoAlvo());
+                    if (prazo != 0) return prazo;
 
-        for (Solicitacao solicitacao : solicitacaoRepository.listarTodas()) {
-            if (STATUS_ATIVOS.contains(solicitacao.getStatus())) {
-                ativas.add(solicitacao);
-            }
-        }
-
-        ativas.sort((a, b) -> {
-            int comparacaoPrazo = a.getPrazoAlvo().compareTo(b.getPrazoAlvo());
-            if (comparacaoPrazo != 0) {
-                return comparacaoPrazo;
-            }
-            return Integer.compare(pesoPrioridade(b.getPrioridade()), pesoPrioridade(a.getPrioridade()));
-        });
-
-        return ativas;
+                    return Integer.compare(
+                            pesoPrioridade(b.getPrioridade()),
+                            pesoPrioridade(a.getPrioridade())
+                    );
+                })
+                .collect(Collectors.toList());
     }
-
 
     private int pesoPrioridade(Prioridade prioridade) {
         switch (prioridade) {

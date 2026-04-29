@@ -5,6 +5,8 @@ import com.aep5s.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UsuarioService {
 
@@ -21,5 +23,9 @@ public class UsuarioService {
         Usuario usuario = Usuario.anonimo();
 
         return usuarioRepository.save(usuario);
+    }
+
+    public List<Usuario> getAll() {
+        return usuarioRepository.findAll();
     }
 }

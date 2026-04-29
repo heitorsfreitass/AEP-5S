@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Sistema</title>
+</head>
+<body>
+
+<h1>Registro de Usuários</h1>
+
+<form action="/usuarios/anonimo" method="post">
+    <button type="submit">Criar usuário anônimo</button>
+</form>
+
+<form action="/usuarios/identificado" method="post">
+    <input type="text" name="nome" placeholder="Nome" required>
+    <input type="text" name="contato" placeholder="Contato">
+    <button type="submit">Criar usuário identificado</button>
+</form>
+
+<h2>Lista de usuários</h2>
+
+<ul>
+    <li th:each="usuario : ${usuarios}">
+        Nome: <span th:text="${usuario.nome}"></span>
+        | Contato: <span th:text="${usuario.contato}"></span>
+        (ID: <span th:text="${usuario.id}"></span>)
+    </li>
+</ul>
+
+</body>
+</html>

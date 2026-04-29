@@ -32,7 +32,12 @@ public class Solicitacao {
     @Enumerated(EnumType.STRING)
     private StatusSolicitacao status;
 
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
     private Usuario solicitante;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "solicitacao_id")
     private List<HistoricoStatus> historico;
 
     public Solicitacao() {} // JPA

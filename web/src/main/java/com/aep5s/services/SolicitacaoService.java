@@ -5,19 +5,24 @@ import com.aep5s.enums.Prioridade;
 import com.aep5s.enums.StatusSolicitacao;
 import com.aep5s.models.Solicitacao;
 import com.aep5s.models.Usuario;
+import com.aep5s.repositories.SolicitacaoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.text.Normalizer;
 import java.util.List;
 
+@Service
 public class SolicitacaoService {
 
-    private final SolicitacaoRepositoryInterface solicitacaoRepository;
-    private final UsuarioService usuarioService = new UsuarioService();
+    private final SolicitacaoRepository solicitacaoRepository;
+    private final UsuarioService usuarioService;
     private final FilaAtendimentoService filaAtendimentoService;
 
-    public SolicitacaoService(SolicitacaoRepositoryInterface solicitacaoRepository) {
+    public SolicitacaoService(SolicitacaoRepository solicitacaoRepository, UsuarioService usuarioService, FilaAtendimentoService filaAtendimentoService) {
         this.solicitacaoRepository = solicitacaoRepository;
-        this.filaAtendimentoService = new FilaAtendimentoService(solicitacaoRepository);
+        this.usuarioService = usuarioService;
+        this.filaAtendimentoService = filaAtendimentoService;
     }
 
     // retorna o protocolo gerado para a UI exibir
@@ -28,58 +33,52 @@ public class SolicitacaoService {
         Prioridade prioridade = parsePrioridade(prioridadeTexto);
 
         // delega criacao do usuario pro UsuarioService
-        Usuario solicitante;
-        if (nome == null || nome.trim().isEmpty()) {
-            solicitante = usuarioService.criarAnonimo();
-        } else {
-            solicitante = usuarioService.criarIdentificado(nome, contato);
-        }
+        Usuario solicitante = (nome == null || nome.trim().isEmpty())
+                ? usuarioService.criarAnonimo()
+                : usuarioService.criarIdentificado(nome, contato);
 
         Solicitacao solicitacao = new Solicitacao(categoria, descricao, localizacao, prioridade, solicitante);
         solicitacao.setTitle(titulo == null ? "" : titulo.trim());
-        solicitacaoRepository.salvar(solicitacao);
+        solicitacaoRepository.save(solicitacao);
         return solicitacao.getProtocolo();
     }
 
     // so retorna a lista - quem exibe e a UI
     public List<Solicitacao> listarSolicitacoes() {
-        return solicitacaoRepository.listarTodas();
+        return solicitacaoRepository.findAll();
     }
 
     public List<Solicitacao> listarFilaAtendimentoSla() {
         return filaAtendimentoService.listarFilaPorSla();
     }
 
-
     public Solicitacao buscarPorProtocolo(String protocolo) {
-        return solicitacaoRepository.buscarPorProtocolo(protocolo);
+        return solicitacaoRepository.findByProtocolo(protocolo);
     }
 
     public void atualizarStatus(String protocolo, String novoStatusTexto,
                                 String comentario, String responsavel) {
         StatusSolicitacao novoStatus = StatusSolicitacao.valueOf(novoStatusTexto.trim().toUpperCase());
-        Solicitacao solicitacao = solicitacaoRepository.buscarPorProtocolo(protocolo);
+        Solicitacao solicitacao = solicitacaoRepository.findByProtocolo(protocolo);
+
+        if (solicitacao == null) {
+            throw new RuntimeException("Solicitação não encontrada");
+        }
+
         solicitacao.atualizarStatus(novoStatus, comentario, responsavel);
+        solicitacaoRepository.save(solicitacao);
     }
 
     public List<Solicitacao> filtrarPorPrioridade(Prioridade prioridade) {
-        return solicitacaoRepository.filtrarPorPrioridade(prioridade);
+        return solicitacaoRepository.findByPrioridade(prioridade);
     }
 
     public List<Solicitacao> filtrarPorCategoria(Categoria categoria) {
-        return solicitacaoRepository.filtrarPorCategoria(categoria);
+        return solicitacaoRepository.findByCategoria(categoria);
     }
 
     public List<Solicitacao> filtrarPorBairro(String bairro) {
-        return solicitacaoRepository.filtrarPorLocalizacao(bairro);
-    }
-
-    public int carregarSolicitacoes(String nomeArquivo) {
-        return solicitacaoRepository.carregarDeArquivo(nomeArquivo);
-    }
-
-    public void salvarSolicitacoes(String nomeArquivo) {
-        solicitacaoRepository.salvarEmArquivo(nomeArquivo);
+        return solicitacaoRepository.findByLocalizacaoIgnoreCase(bairro);
     }
 
     private Categoria parseCategoria(String categoriaTexto) {
