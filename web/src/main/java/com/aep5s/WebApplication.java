@@ -1,13 +1,13 @@
-package com.example.aep_web;
+package com.aep5s;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AepWebApplication {
+public class WebApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AepWebApplication.class, args);
+		SpringApplication.run(WebApplication.class, args);
 	}
 
 }
