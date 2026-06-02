@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Área do Servidor')}"></head>
+<body>
+
+<div class="container mt-5">
+    <h2>Painel do Servidor</h2>
+
+    <table class="table table-striped mt-4">
+        <thead>
+        <tr>
+            <th>Protocolo</th>
+            <th>Categoria</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr>
+            <td>001</td>
+            <td>Iluminação</td>
+
+            <td>
+                <span class="badge bg-success">
+                    Aberto
+                </span>
+            </td>
+
+            <td>
+                <button class="btn btn-sm btn-primary">
+                    Assumir
+                </button>
+            </td>
+        </tr>
+
+        <tr>
+            <td>002</td>
+            <td>Limpeza</td>
+
+            <td>
+                <span class="badge bg-warning">
+                    Em andamento
+                </span>
+            </td>
+
+            <td>
+                <button class="btn btn-sm btn-success">
+                    Finalizar
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

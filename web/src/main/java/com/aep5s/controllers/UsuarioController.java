@@ -16,30 +16,24 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
-    @GetMapping("/")
-    public String home(Model model) {
-        List<Usuario> usuarios = usuarioService.getAll();
-        model.addAttribute("usuarios", usuarios);
-        return "index";
-    }
-
     @GetMapping("/usuarios")
-    public List<Usuario> getAll() {
-        return usuarioService.getAll();
+    public String home(Model model) {
+        model.addAttribute("usuarios", usuarioService.getAll());
+        return "usuarios";
     }
 
     @PostMapping("/usuarios/anonimo")
     public String criarAnonimo() {
         usuarioService.criarAnonimo();
-        return "redirect:/";
+        return "redirect:/usuarios";
     }
 
     @PostMapping("/usuarios/identificado")
     public String criarIdentificado(String nome, String contato) {
         if (nome == null || nome.trim().isEmpty()) {
-            return "redirect:/";
+            return "redirect:/usuarios";
         }
         usuarioService.criarIdentificado(nome, contato);
-        return "redirect:/";
+        return "redirect:/usuarios";
     }
 }

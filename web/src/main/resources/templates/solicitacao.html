@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Nova Solicitação')}"></head>
+<body>
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            Nova Solicitação
+        </div>
+
+        <div class="card-body">
+            <form>
+                <div class="mb-3">
+                    <label>Título</label>
+                    <input type="text" class="form-control">
+                </div>
+
+                <div class="mb-3">
+                    <label>Categoria</label>
+
+                    <select class="form-select">
+                        <option>Iluminação</option>
+                        <option>Buraco na Via</option>
+                        <option>Limpeza Urbana</option>
+                        <option>Outros</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label>Descrição</label>
+                    <textarea class="form-control" rows="5"></textarea>
+                </div>
+
+                <button class="btn btn-primary">
+                    Enviar Solicitação
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

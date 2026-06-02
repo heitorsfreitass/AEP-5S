@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Fila SLA')}"></head>
+<body>
+
+<div class="container mt-5">
+    <h2>Fila SLA</h2>
+
+    <table class="table table-bordered mt-4">
+        <thead>
+        <tr>
+            <th>Protocolo</th>
+            <th>Tempo</th>
+            <th>Situação</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr>
+            <td>001</td>
+            <td>12 horas</td>
+
+            <td>
+                <span class="badge bg-success">
+                    Dentro do prazo
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>002</td>
+            <td>52 horas</td>
+
+            <td>
+                <span class="badge bg-danger">
+                    SLA Estourado
+                </span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

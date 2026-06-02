@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Dashboard')}"></head>
+<body>
+
+<nav class="navbar navbar-dark bg-primary">
+    <div class="container">
+        <span class="navbar-brand">Sistema de Solicitações Urbanas</span>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <h2>Dashboard</h2>
+
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h1>15</h1>
+                    <p>Solicitações Abertas</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h1>8</h1>
+                    <p>Em Atendimento</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h1>32</h1>
+                    <p>Finalizadas</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="mt-4">
+        <a href="/solicitacao" class="btn btn-success">Nova Solicitação</a>
+        <a href="/protocolo" class="btn btn-info">Consultar Protocolo</a>
+        <a href="/servidor" class="btn btn-warning">Área do Servidor</a>
+        <a href="/sla" class="btn btn-danger">Fila SLA</a>
+    </div>
+</div>
+</body>
+</html>

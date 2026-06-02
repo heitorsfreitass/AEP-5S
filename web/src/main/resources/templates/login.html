@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Login')}"></head>
+<body>
+
+<div class="container vh-100 d-flex justify-content-center align-items-center">
+    <div class="card p-4 shadow" style="width:400px">
+        <h3 class="text-center mb-4">
+            Sistema de Solicitações Urbanas
+        </h3>
+
+        <form action="/dashboard">
+            <div class="mb-3">
+                <input type="text" class="form-control" placeholder="Usuário">
+            </div>
+
+            <div class="mb-3">
+                <input type="password" class="form-control" placeholder="Senha">
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">
+                Entrar
+            </button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
