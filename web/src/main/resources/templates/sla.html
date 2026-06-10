@@ -9,11 +9,13 @@
 
     <div class="d-flex justify-content-between align-items-start mb-1">
         <div>
-            <p class="page-title mb-0">Fila de Atendimento (SLA)</p>
-            <p class="page-subtitle">Solicitações ordenadas por prazo (SLA) — as mais urgentes primeiro.</p>
+            <h4 class="fw-bold mb-1">Fila de Atendimento (SLA)</h4>
+            <p class="text-secondary mb-4" style="font-size:.92rem;">
+                Solicitações ordenadas por prazo (SLA) — as mais urgentes primeiro.
+            </p>
         </div>
         <a href="/servidor" class="btn btn-outline-secondary btn-sm mt-1">
-            <i class="bi bi-arrow-left"></i> Painel do Servidor
+            <i class="bi bi-arrow-left me-1"></i>Painel do Servidor
         </a>
     </div>
 
@@ -21,60 +23,74 @@
         <div class="table-responsive">
             <table class="table mb-0">
                 <thead>
-                <tr>
-                    <th style="width:60px;">Posição</th>
-                    <th>Protocolo</th>
-                    <th>Categoria</th>
-                    <th>Prioridade</th>
-                    <th>Status</th>
-                    <th>Vence em</th>
-                    <th>Atraso</th>
-                    <th>Ações</th>
-                </tr>
+                    <tr>
+                        <th style="width:70px;">Posição</th>
+                        <th>Protocolo</th>
+                        <th>Categoria</th>
+                        <th>Prioridade</th>
+                        <th>Status</th>
+                        <th>Vence em</th>
+                        <th>Atraso</th>
+                        <th>Ações</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr th:if="${#lists.isEmpty(fila)}">
-                    <td colspan="8" class="text-center text-secondary py-4">
-                        Nenhuma solicitação ativa na fila.
-                    </td>
-                </tr>
-                <tr th:each="s, iter : ${fila}">
-                    <td class="text-center fw-bold" th:text="${iter.index + 1}"
-                        th:style="${iter.index == 0} ? 'color:#b71c1c;font-size:1.1rem;' : ''">
-                    </td>
-                    <td class="fw-semibold" style="font-size:.85rem;" th:text="${s.protocolo}"></td>
-                    <td th:text="${s.categoria.descricao}"></td>
-                    <td>
-                        <span class="badge-status"
-                              th:classappend="'p-' + ${#strings.toLowerCase(s.prioridade.name())}"
-                              th:text="${s.prioridade.name()}">
-                        </span>
-                    </td>
-                    <td>
-                        <span class="badge-status"
-                              th:classappend="'s-' + ${#strings.toLowerCase(s.status.name())}"
-                              th:text="${s.status.name().replace('_',' ')}">
-                        </span>
-                    </td>
-                    <td th:text="${#temporals.format(s.prazoAlvo,'dd/MM/yyyy HH:mm')}"></td>
-                    <td>
-                        <!-- atrasado -->
-                        <span th:if="${s.prazoAlvo.isBefore(agora)}" class="sla-atrasado">
-                            <i class="bi bi-exclamation-circle-fill"></i>
-                            ATRASADO
-                        </span>
-                        <!-- dentro do prazo: mostra quanto tempo resta -->
-                        <span th:unless="${s.prazoAlvo.isBefore(agora)}" class="sla-ok">
-                            —
-                        </span>
-                    </td>
-                    <td>
-                        <a th:href="@{/protocolo(protocolo=${s.protocolo})}"
-                           class="btn btn-sm btn-outline-secondary">
-                            Ver <i class="bi bi-chevron-right"></i>
-                        </a>
-                    </td>
-                </tr>
+                    <tr th:if="${#lists.isEmpty(fila)}">
+                        <td colspan="8" class="text-center text-secondary py-5">
+                            <i class="bi bi-check2-circle fs-3 d-block mb-2 text-success"></i>
+                            Nenhuma solicitação ativa na fila.
+                        </td>
+                    </tr>
+                    <tr th:each="s, iter : ${fila}">
+
+                        <!-- Posição -->
+                        <td class="text-center fw-bold fs-5"
+                            th:style="${iter.index == 0} ? 'color:#b91c1c;' : 'color:#374151;'"
+                            th:text="${iter.index + 1}">
+                        </td>
+
+                        <td class="fw-semibold" style="font-size:.88rem;"
+                            th:text="${s.protocolo}">
+                        </td>
+
+                        <td th:text="${s.categoria.descricao}"></td>
+
+                        <td>
+                            <span class="bs"
+                                  th:classappend="'p-' + ${#strings.toLowerCase(s.prioridade.name())}"
+                                  th:text="${s.prioridade.name()}">
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="bs"
+                                  th:classappend="'s-' + ${#strings.toLowerCase(s.status.name())}"
+                                  th:text="${s.status.name().replace('_',' ')}">
+                            </span>
+                        </td>
+
+                        <!-- Tempo relativo até o prazo -->
+                        <td class="fw-semibold"
+                            th:text="${tempoRestante[s.protocolo]}"
+                            th:class="${s.prazoAlvo.isBefore(agora)} ? 'sla-late' : 'sla-ok'">
+                        </td>
+
+                        <!-- Badge atraso -->
+                        <td>
+                            <span th:if="${s.prazoAlvo.isBefore(agora)}" class="bs p-urgente">
+                                ATRASADO
+                            </span>
+                            <span th:unless="${s.prazoAlvo.isBefore(agora)}"
+                                  class="text-secondary">—</span>
+                        </td>
+
+                        <td>
+                            <a th:href="@{/protocolo(protocolo=${s.protocolo})}"
+                               class="btn btn-sm btn-outline-secondary">
+                                Ver <i class="bi bi-chevron-right"></i>
+                            </a>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
