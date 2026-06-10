@@ -7,137 +7,79 @@
 
 <div class="container py-4">
 
-    <!-- Hero card (branco com ilustração) -->
-    <div class="hero-card mb-4">
+    <!-- Hero -->
+    <div class="hero-banner mb-4">
         <div>
             <h2>Bem-vindo ao Sistema de<br>Solicitações Urbanas</h2>
             <p>Aqui você pode abrir novas solicitações,<br>acompanhar protocolos e consultar informações.</p>
         </div>
-        <!-- Ilustração SVG de cidade -->
-        <svg class="city-svg" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
-            <!-- céu -->
-            <rect width="200" height="120" fill="#e8f4fd" rx="8"/>
-            <!-- nuvens -->
-            <ellipse cx="40" cy="22" rx="18" ry="8" fill="#fff"/>
-            <ellipse cx="55" cy="18" rx="14" ry="7" fill="#fff"/>
-            <ellipse cx="28" cy="20" rx="12" ry="6" fill="#fff"/>
-            <ellipse cx="150" cy="28" rx="16" ry="7" fill="#fff"/>
-            <ellipse cx="163" cy="24" rx="12" ry="6" fill="#fff"/>
-            <ellipse cx="140" cy="26" rx="10" ry="5" fill="#fff"/>
-            <!-- árvores fundo -->
-            <rect x="8" y="85" width="6" height="18" fill="#4ade80" rx="1"/>
-            <ellipse cx="11" cy="83" rx="8" ry="9" fill="#22c55e"/>
-            <rect x="185" y="88" width="5" height="15" fill="#4ade80" rx="1"/>
-            <ellipse cx="188" cy="86" rx="7" ry="8" fill="#22c55e"/>
-            <!-- prédio esquerdo (alto) -->
-            <rect x="22" y="42" width="28" height="60" fill="#1e3a5f" rx="2"/>
-            <rect x="24" y="46" width="5" height="6" fill="#93c5fd" rx="1" opacity=".9"/>
-            <rect x="32" y="46" width="5" height="6" fill="#93c5fd" rx="1" opacity=".9"/>
-            <rect x="40" y="46" width="5" height="6" fill="#fde68a" rx="1" opacity=".9"/>
-            <rect x="24" y="57" width="5" height="6" fill="#fde68a" rx="1" opacity=".9"/>
-            <rect x="32" y="57" width="5" height="6" fill="#93c5fd" rx="1" opacity=".9"/>
-            <rect x="40" y="57" width="5" height="6" fill="#93c5fd" rx="1" opacity=".9"/>
-            <rect x="24" y="68" width="5" height="6" fill="#93c5fd" rx="1" opacity=".9"/>
-            <rect x="32" y="68" width="5" height="6" fill="#fde68a" rx="1" opacity=".9"/>
-            <rect x="40" y="68" width="5" height="6" fill="#93c5fd" rx="1" opacity=".9"/>
-            <!-- prédio centro (grande) -->
-            <rect x="72" y="30" width="56" height="72" fill="#2563eb" rx="2"/>
-            <rect x="76" y="36" width="8" height="9" fill="#bfdbfe" rx="1" opacity=".9"/>
-            <rect x="88" y="36" width="8" height="9" fill="#bfdbfe" rx="1" opacity=".9"/>
-            <rect x="100" y="36" width="8" height="9" fill="#fde68a" rx="1" opacity=".9"/>
-            <rect x="112" y="36" width="8" height="9" fill="#bfdbfe" rx="1" opacity=".9"/>
-            <rect x="76" y="50" width="8" height="9" fill="#fde68a" rx="1" opacity=".9"/>
-            <rect x="88" y="50" width="8" height="9" fill="#bfdbfe" rx="1" opacity=".9"/>
-            <rect x="100" y="50" width="8" height="9" fill="#bfdbfe" rx="1" opacity=".9"/>
-            <rect x="112" y="50" width="8" height="9" fill="#fde68a" rx="1" opacity=".9"/>
-            <rect x="76" y="64" width="8" height="9" fill="#bfdbfe" rx="1" opacity=".9"/>
-            <rect x="88" y="64" width="8" height="9" fill="#fde68a" rx="1" opacity=".9"/>
-            <rect x="100" y="64" width="8" height="9" fill="#bfdbfe" rx="1" opacity=".9"/>
-            <rect x="112" y="64" width="8" height="9" fill="#bfdbfe" rx="1" opacity=".9"/>
-            <!-- porta central -->
-            <rect x="91" y="88" width="18" height="14" fill="#1e40af" rx="1"/>
-            <!-- prédio direito -->
-            <rect x="148" y="50" width="30" height="52" fill="#475569" rx="2"/>
-            <rect x="151" y="55" width="6" height="7" fill="#bae6fd" rx="1" opacity=".9"/>
-            <rect x="160" y="55" width="6" height="7" fill="#fde68a" rx="1" opacity=".9"/>
-            <rect x="169" y="55" width="6" height="7" fill="#bae6fd" rx="1" opacity=".9"/>
-            <rect x="151" y="67" width="6" height="7" fill="#fde68a" rx="1" opacity=".9"/>
-            <rect x="160" y="67" width="6" height="7" fill="#bae6fd" rx="1" opacity=".9"/>
-            <rect x="169" y="67" width="6" height="7" fill="#fde68a" rx="1" opacity=".9"/>
-            <rect x="151" y="79" width="6" height="7" fill="#bae6fd" rx="1" opacity=".9"/>
-            <rect x="169" y="79" width="6" height="7" fill="#bae6fd" rx="1" opacity=".9"/>
-            <!-- chão -->
-            <rect x="0" y="100" width="200" height="20" fill="#86efac" rx="0"/>
-            <rect x="0" y="102" width="200" height="18" fill="#4ade80" opacity=".4"/>
-            <!-- calçada -->
-            <rect x="0" y="100" width="200" height="4" fill="#d1d5db"/>
-        </svg>
+        <i class="bi bi-buildings" style="font-size:5rem;opacity:.3;"></i>
     </div>
 
     <!-- Ações rápidas -->
     <div class="row g-3 mb-4">
         <div class="col-md-4">
             <div class="action-card">
-                <div class="ac-icon-wrap ac-blue"><i class="bi bi-file-earmark-plus-fill"></i></div>
+                <span class="ac-icon text-primary"><i class="bi bi-file-earmark-plus"></i></span>
                 <h6>Nova Solicitação</h6>
                 <p>Abra uma nova solicitação de serviço urbano.</p>
-                <a href="/solicitacao" class="btn btn-primary w-100">Abrir</a>
+                <a href="/solicitacao" class="btn btn-primary px-4">Abrir</a>
             </div>
         </div>
         <div class="col-md-4">
             <div class="action-card">
-                <div class="ac-icon-wrap ac-green"><i class="bi bi-search"></i></div>
+                <span class="ac-icon text-success"><i class="bi bi-search"></i></span>
                 <h6>Consultar Protocolo</h6>
                 <p>Acompanhe o status da sua solicitação.</p>
-                <a href="/protocolo" class="btn btn-success w-100">Consultar</a>
+                <a href="/protocolo" class="btn btn-success px-4">Consultar</a>
             </div>
         </div>
         <div class="col-md-4">
             <div class="action-card">
-                <div class="ac-icon-wrap ac-yellow"><i class="bi bi-person-gear"></i></div>
+                <span class="ac-icon text-warning"><i class="bi bi-person-gear"></i></span>
                 <h6>Área do Servidor</h6>
                 <p>Acesse a área administrativa do sistema.</p>
-                <a href="/servidor" class="btn btn-warning w-100">Acessar</a>
+                <a href="/servidor" class="btn btn-warning px-4">Acessar</a>
             </div>
         </div>
     </div>
 
-    <!-- Resumo Geral -->
-    <p class="section-heading">Resumo Geral</p>
+    <!-- Resumo geral -->
+    <h6 class="fw-bold text-secondary mb-3 text-uppercase" style="font-size:.8rem;letter-spacing:.06em;">Resumo Geral</h6>
     <div class="row g-3">
         <div class="col-6 col-md-3">
             <div class="stat-card">
-                <div class="stat-icon si-blue"><i class="bi bi-clipboard2-data-fill"></i></div>
+                <div class="stat-icon blue"><i class="bi bi-clipboard-data"></i></div>
                 <div>
-                    <div class="stat-val" th:text="${total}">0</div>
-                    <div class="stat-lbl">Total de Solicitações</div>
+                    <div class="stat-value" th:text="${total}">0</div>
+                    <div class="stat-label">Total de Solicitações</div>
                 </div>
             </div>
         </div>
         <div class="col-6 col-md-3">
             <div class="stat-card">
-                <div class="stat-icon si-orange"><i class="bi bi-folder2-open"></i></div>
+                <div class="stat-icon orange"><i class="bi bi-folder2-open"></i></div>
                 <div>
-                    <div class="stat-val" th:text="${abertas}">0</div>
-                    <div class="stat-lbl">Abertas</div>
+                    <div class="stat-value" th:text="${abertas}">0</div>
+                    <div class="stat-label">Abertas</div>
                 </div>
             </div>
         </div>
         <div class="col-6 col-md-3">
             <div class="stat-card">
-                <div class="stat-icon si-teal"><i class="bi bi-gear-fill"></i></div>
+                <div class="stat-icon teal"><i class="bi bi-gear"></i></div>
                 <div>
-                    <div class="stat-val" th:text="${emExec}">0</div>
-                    <div class="stat-lbl">Em Execução</div>
+                    <div class="stat-value" th:text="${emExec}">0</div>
+                    <div class="stat-label">Em Execução</div>
                 </div>
             </div>
         </div>
         <div class="col-6 col-md-3">
             <div class="stat-card">
-                <div class="stat-icon si-green"><i class="bi bi-check-circle-fill"></i></div>
+                <div class="stat-icon green"><i class="bi bi-check-circle"></i></div>
                 <div>
-                    <div class="stat-val" th:text="${resolvidas}">0</div>
-                    <div class="stat-lbl">Resolvidas</div>
+                    <div class="stat-value" th:text="${resolvidas}">0</div>
+                    <div class="stat-label">Resolvidas</div>
                 </div>
             </div>
         </div>

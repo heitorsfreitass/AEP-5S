@@ -10,11 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class SolicitacaoController {
@@ -142,24 +139,9 @@ public class SolicitacaoController {
 
     @GetMapping("/sla")
     public String filaSla(Model model) {
-        LocalDateTime agora = LocalDateTime.now();
         List<Solicitacao> fila = solicitacaoService.listarFilaAtendimentoSla();
-
-        Map<String, String> tempoRestante = new LinkedHashMap<>();
-        for (Solicitacao s : fila) {
-            Duration dur = Duration.between(agora, s.getPrazoAlvo());
-            long totalMin = dur.toMinutes();
-            boolean atrasado = totalMin < 0;
-            long absMin = Math.abs(totalMin);
-            long h = absMin / 60;
-            long m = absMin % 60;
-            String texto = (atrasado ? "-" : "") + h + "h " + m + "m";
-            tempoRestante.put(s.getProtocolo(), texto);
-        }
-
         model.addAttribute("fila", fila);
-        model.addAttribute("tempoRestante", tempoRestante);
-        model.addAttribute("agora", agora);
+        model.addAttribute("agora", LocalDateTime.now());
         return "sla";
     }
 }
