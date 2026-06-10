@@ -3,42 +3,85 @@
 <head th:replace="~{fragments/head :: head('Fila SLA')}"></head>
 <body>
 
-<div class="container mt-5">
-    <h2>Fila SLA</h2>
+<nav th:replace="~{fragments/navbar :: navbar('Servidor')}"></nav>
 
-    <table class="table table-bordered mt-4">
-        <thead>
-        <tr>
-            <th>Protocolo</th>
-            <th>Tempo</th>
-            <th>Situação</th>
-        </tr>
-        </thead>
+<div class="container py-4">
 
-        <tbody>
-        <tr>
-            <td>001</td>
-            <td>12 horas</td>
+    <div class="d-flex justify-content-between align-items-start mb-1">
+        <div>
+            <p class="page-title mb-0">Fila de Atendimento (SLA)</p>
+            <p class="page-subtitle">Solicitações ordenadas por prazo (SLA) — as mais urgentes primeiro.</p>
+        </div>
+        <a href="/servidor" class="btn btn-outline-secondary btn-sm mt-1">
+            <i class="bi bi-arrow-left"></i> Painel do Servidor
+        </a>
+    </div>
 
-            <td>
-                <span class="badge bg-success">
-                    Dentro do prazo
-                </span>
-            </td>
-        </tr>
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                <tr>
+                    <th style="width:60px;">Posição</th>
+                    <th>Protocolo</th>
+                    <th>Categoria</th>
+                    <th>Prioridade</th>
+                    <th>Status</th>
+                    <th>Vence em</th>
+                    <th>Atraso</th>
+                    <th>Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${#lists.isEmpty(fila)}">
+                    <td colspan="8" class="text-center text-secondary py-4">
+                        Nenhuma solicitação ativa na fila.
+                    </td>
+                </tr>
+                <tr th:each="s, iter : ${fila}">
+                    <td class="text-center fw-bold" th:text="${iter.index + 1}"
+                        th:style="${iter.index == 0} ? 'color:#b71c1c;font-size:1.1rem;' : ''">
+                    </td>
+                    <td class="fw-semibold" style="font-size:.85rem;" th:text="${s.protocolo}"></td>
+                    <td th:text="${s.categoria.descricao}"></td>
+                    <td>
+                        <span class="badge-status"
+                              th:classappend="'p-' + ${#strings.toLowerCase(s.prioridade.name())}"
+                              th:text="${s.prioridade.name()}">
+                        </span>
+                    </td>
+                    <td>
+                        <span class="badge-status"
+                              th:classappend="'s-' + ${#strings.toLowerCase(s.status.name())}"
+                              th:text="${s.status.name().replace('_',' ')}">
+                        </span>
+                    </td>
+                    <td th:text="${#temporals.format(s.prazoAlvo,'dd/MM/yyyy HH:mm')}"></td>
+                    <td>
+                        <!-- atrasado -->
+                        <span th:if="${s.prazoAlvo.isBefore(agora)}" class="sla-atrasado">
+                            <i class="bi bi-exclamation-circle-fill"></i>
+                            ATRASADO
+                        </span>
+                        <!-- dentro do prazo: mostra quanto tempo resta -->
+                        <span th:unless="${s.prazoAlvo.isBefore(agora)}" class="sla-ok">
+                            —
+                        </span>
+                    </td>
+                    <td>
+                        <a th:href="@{/protocolo(protocolo=${s.protocolo})}"
+                           class="btn btn-sm btn-outline-secondary">
+                            Ver <i class="bi bi-chevron-right"></i>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-        <tr>
-            <td>002</td>
-            <td>52 horas</td>
-
-            <td>
-                <span class="badge bg-danger">
-                    SLA Estourado
-                </span>
-            </td>
-        </tr>
-        </tbody>
-    </table>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

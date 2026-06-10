@@ -1,4 +1,4 @@
-package com.aep5s.aep_web;
+package com.aep5s;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

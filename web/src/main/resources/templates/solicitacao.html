@@ -3,41 +3,117 @@
 <head th:replace="~{fragments/head :: head('Nova Solicitação')}"></head>
 <body>
 
-<div class="container mt-5">
+<nav th:replace="~{fragments/navbar :: navbar('Visitante')}"></nav>
+
+<div class="container py-4" style="max-width:720px;">
+
+    <div class="mb-3">
+        <a href="/" class="text-decoration-none text-secondary" style="font-size:.9rem;">
+            <i class="bi bi-arrow-left"></i> Voltar ao início
+        </a>
+    </div>
+
     <div class="card">
-        <div class="card-header">
-            Nova Solicitação
+        <div class="card-header d-flex align-items-center gap-2">
+            <i class="bi bi-file-earmark-plus text-primary"></i> Nova Solicitação
         </div>
+        <div class="card-body p-4">
+            <p class="text-secondary mb-4" style="font-size:.9rem;">Preencha os dados abaixo para abrir uma nova solicitação.</p>
 
-        <div class="card-body">
-            <form>
-                <div class="mb-3">
-                    <label>Título</label>
-                    <input type="text" class="form-control">
+            <form action="/solicitacao" method="post">
+
+                <!-- Tipo de solicitante -->
+                <div class="mb-4">
+                    <label class="form-label">Tipo de Solicitante</label><br>
+                    <div class="d-flex gap-3">
+                        <div class="tipo-btn">
+                            <input type="radio" name="tipoSolicitante" id="tipo-id" value="identificado" checked>
+                            <label for="tipo-id"><i class="bi bi-person-check"></i> Identificado</label>
+                        </div>
+                        <div class="tipo-btn">
+                            <input type="radio" name="tipoSolicitante" id="tipo-anon" value="anonimo">
+                            <label for="tipo-anon"><i class="bi bi-incognito"></i> Anônimo</label>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="mb-3">
-                    <label>Categoria</label>
-
-                    <select class="form-select">
-                        <option>Iluminação</option>
-                        <option>Buraco na Via</option>
-                        <option>Limpeza Urbana</option>
-                        <option>Outros</option>
-                    </select>
+                <!-- Dados identificado -->
+                <div id="camposIdentificado">
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label" for="nome">Nome Completo</label>
+                            <input type="text" class="form-control" id="nome" name="nome" placeholder="Digite seu nome">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="contato">Contato (telefone ou e-mail)</label>
+                            <input type="text" class="form-control" id="contato" name="contato" placeholder="Digite seu contato">
+                        </div>
+                    </div>
                 </div>
 
-                <div class="mb-3">
-                    <label>Descrição</label>
-                    <textarea class="form-control" rows="5"></textarea>
+                <!-- Categoria + Prioridade -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label" for="categoria">Categoria</label>
+                        <select class="form-select" id="categoria" name="categoria" required>
+                            <option value="" disabled selected>Selecione a categoria</option>
+                            <option th:each="cat : ${categorias}"
+                                    th:value="${cat.name()}"
+                                    th:text="${cat.descricao}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="prioridade">Prioridade</label>
+                        <select class="form-select" id="prioridade" name="prioridade" required>
+                            <option value="" disabled selected>Selecione a prioridade</option>
+                            <option th:each="p : ${prioridades}"
+                                    th:value="${p.name()}"
+                                    th:text="${p.name()}">
+                            </option>
+                        </select>
+                    </div>
                 </div>
 
-                <button class="btn btn-primary">
-                    Enviar Solicitação
-                </button>
+                <!-- Título -->
+                <div class="mb-3">
+                    <label class="form-label" for="titulo">Título da Solicitação</label>
+                    <input type="text" class="form-control" id="titulo" name="titulo"
+                           placeholder="Digite um título resumido" required>
+                </div>
+
+                <!-- Descrição -->
+                <div class="mb-3">
+                    <label class="form-label" for="descricao">Descrição</label>
+                    <textarea class="form-control" id="descricao" name="descricao" rows="4"
+                              placeholder="Descreva sua solicitação com mais detalhes..." required></textarea>
+                </div>
+
+                <!-- Localização -->
+                <div class="mb-4">
+                    <label class="form-label" for="localizacao">Localização (bairro ou endereço)</label>
+                    <input type="text" class="form-control" id="localizacao" name="localizacao"
+                           placeholder="Digite o bairro ou endereço">
+                </div>
+
+                <div class="d-flex justify-content-end gap-2">
+                    <a href="/" class="btn btn-outline-secondary">Cancelar</a>
+                    <button type="submit" class="btn btn-primary px-4">
+                        <i class="bi bi-send"></i> Enviar Solicitação
+                    </button>
+                </div>
             </form>
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const radios = document.querySelectorAll('input[name="tipoSolicitante"]');
+    const campos = document.getElementById('camposIdentificado');
+    radios.forEach(r => r.addEventListener('change', () => {
+        campos.style.display = r.value === 'anonimo' ? 'none' : '';
+    }));
+</script>
 </body>
 </html>

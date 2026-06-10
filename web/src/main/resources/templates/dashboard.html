@@ -3,50 +3,90 @@
 <head th:replace="~{fragments/head :: head('Dashboard')}"></head>
 <body>
 
-<nav class="navbar navbar-dark bg-primary">
-    <div class="container">
-        <span class="navbar-brand">Sistema de Solicitações Urbanas</span>
-    </div>
-</nav>
+<nav th:replace="~{fragments/navbar :: navbar('Visitante')}"></nav>
 
-<div class="container mt-4">
-    <h2>Dashboard</h2>
+<div class="container py-4">
 
-    <div class="row mt-4">
-        <div class="col-md-4">
-            <div class="card text-center">
-                <div class="card-body">
-                    <h1>15</h1>
-                    <p>Solicitações Abertas</p>
-                </div>
-            </div>
+    <!-- Hero -->
+    <div class="hero-banner mb-4">
+        <div>
+            <h2>Bem-vindo ao Sistema de<br>Solicitações Urbanas</h2>
+            <p>Aqui você pode abrir novas solicitações,<br>acompanhar protocolos e consultar informações.</p>
         </div>
+        <i class="bi bi-buildings" style="font-size:5rem;opacity:.3;"></i>
+    </div>
 
+    <!-- Ações rápidas -->
+    <div class="row g-3 mb-4">
         <div class="col-md-4">
-            <div class="card text-center">
-                <div class="card-body">
-                    <h1>8</h1>
-                    <p>Em Atendimento</p>
-                </div>
+            <div class="action-card">
+                <span class="ac-icon text-primary"><i class="bi bi-file-earmark-plus"></i></span>
+                <h6>Nova Solicitação</h6>
+                <p>Abra uma nova solicitação de serviço urbano.</p>
+                <a href="/solicitacao" class="btn btn-primary px-4">Abrir</a>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card text-center">
-                <div class="card-body">
-                    <h1>32</h1>
-                    <p>Finalizadas</p>
+            <div class="action-card">
+                <span class="ac-icon text-success"><i class="bi bi-search"></i></span>
+                <h6>Consultar Protocolo</h6>
+                <p>Acompanhe o status da sua solicitação.</p>
+                <a href="/protocolo" class="btn btn-success px-4">Consultar</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="action-card">
+                <span class="ac-icon text-warning"><i class="bi bi-person-gear"></i></span>
+                <h6>Área do Servidor</h6>
+                <p>Acesse a área administrativa do sistema.</p>
+                <a href="/servidor" class="btn btn-warning px-4">Acessar</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resumo geral -->
+    <h6 class="fw-bold text-secondary mb-3 text-uppercase" style="font-size:.8rem;letter-spacing:.06em;">Resumo Geral</h6>
+    <div class="row g-3">
+        <div class="col-6 col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon blue"><i class="bi bi-clipboard-data"></i></div>
+                <div>
+                    <div class="stat-value" th:text="${total}">0</div>
+                    <div class="stat-label">Total de Solicitações</div>
                 </div>
             </div>
         </div>
-
+        <div class="col-6 col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon orange"><i class="bi bi-folder2-open"></i></div>
+                <div>
+                    <div class="stat-value" th:text="${abertas}">0</div>
+                    <div class="stat-label">Abertas</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon teal"><i class="bi bi-gear"></i></div>
+                <div>
+                    <div class="stat-value" th:text="${emExec}">0</div>
+                    <div class="stat-label">Em Execução</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon green"><i class="bi bi-check-circle"></i></div>
+                <div>
+                    <div class="stat-value" th:text="${resolvidas}">0</div>
+                    <div class="stat-label">Resolvidas</div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="mt-4">
-        <a href="/solicitacao" class="btn btn-success">Nova Solicitação</a>
-        <a href="/protocolo" class="btn btn-info">Consultar Protocolo</a>
-        <a href="/servidor" class="btn btn-warning">Área do Servidor</a>
-        <a href="/sla" class="btn btn-danger">Fila SLA</a>
-    </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
