@@ -39,6 +39,19 @@ Sistema de registro e acompanhamento de solicitações urbanas desenvolvido para
 - JDK 17 ou superior instalado
 - Maven (ou usar o `mvnw` incluso no projeto)
 
+### Credenciais de acesso (mockadas)
+
+| Tipo | Login | Senha | Nome exibido |
+|---|---|---|---|
+| Cidadão | `joao` | `123` | João Silva |
+| Cidadão | `maria` | `123` | Maria Souza |
+| Cidadão | `carlos` | `123` | Carlos Lima |
+| Admin | `admin` | `admin123` | Administrador |
+| Admin | `gestor` | `admin123` | Gestor Municipal |
+
+> Cidadãos são redirecionados ao **Dashboard** após login.
+> Admins são redirecionados ao **Painel do Servidor**. Apenas admins acessam `/servidor` e `/sla`.
+
 ### Como rodar
 
 ```bash
