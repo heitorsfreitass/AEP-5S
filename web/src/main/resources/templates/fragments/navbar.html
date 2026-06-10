@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-<nav th:fragment="navbar(papel)" class="navbar-custom d-flex justify-content-between align-items-center">
-    <a class="navbar-brand" href="/">
+<nav th:fragment="navbar(papel)" class="top-nav">
+    <a class="brand" href="/">
         <i class="bi bi-bank2"></i> Sistema de Solicitações Urbanas
     </a>
-    <span class="nav-user">
+    <span class="user-pill">
         <i class="bi bi-person-circle"></i>
-        <span th:text="'Olá, ' + ${papel}">Olá, Visitante</span>
+        Olá, <span th:text="${papel}">Visitante</span>
     </span>
 </nav>
 </body>

@@ -7,95 +7,93 @@
 
 <div class="container py-4" style="max-width:760px;">
 
-    <div class="mb-3">
-        <a href="/" class="text-decoration-none text-secondary" style="font-size:.9rem;">
-            <i class="bi bi-arrow-left"></i> Voltar ao início
-        </a>
-    </div>
-
-    <p class="page-title">Consultar Protocolo</p>
-    <p class="page-subtitle">Informe o número do protocolo para acompanhar sua solicitação.</p>
+    <p class="pg-title">Consultar Protocolo</p>
+    <p class="pg-subtitle">Informe o número do protocolo para acompanhar sua solicitação.</p>
 
     <!-- Busca -->
     <div class="card mb-4">
         <div class="card-body p-3">
             <form action="/protocolo" method="get" class="d-flex gap-2">
                 <input type="text" class="form-control" name="protocolo"
-                       placeholder="Ex: OA-2025-AB12CD"
+                       placeholder="Digite o número do protocolo"
                        th:value="${param.protocolo}">
-                <button type="submit" class="btn btn-primary px-4">
-                    <i class="bi bi-search"></i> Buscar
+                <button type="submit" class="btn btn-primary px-4" style="white-space:nowrap;">
+                    <i class="bi bi-search me-1"></i> Buscar
                 </button>
             </form>
         </div>
     </div>
 
     <!-- Erro -->
-    <div th:if="${erro}" class="alert alert-danger d-flex align-items-center gap-2">
-        <i class="bi bi-exclamation-triangle-fill"></i>
-        <span th:text="${erro}"></span>
+    <div th:if="${erro}" class="alert alert-danger">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i><span th:text="${erro}"></span>
     </div>
 
     <!-- Resultado -->
     <div th:if="${solicitacao}" class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
+        <!-- Cabeçalho do protocolo -->
+        <div class="card-header-custom justify-content-between">
             <span>Protocolo: <strong th:text="${solicitacao.protocolo}"></strong></span>
-            <span class="badge-status"
+            <span class="bs"
                   th:classappend="'s-' + ${#strings.toLowerCase(solicitacao.status.name())}"
                   th:text="${solicitacao.status.name().replace('_',' ')}">
             </span>
         </div>
+
         <div class="card-body p-4">
+            <!-- Grid de info -->
             <div class="row g-3 mb-4">
-                <div class="col-md-4">
-                    <div class="text-secondary" style="font-size:.8rem;text-transform:uppercase;font-weight:600;">Categoria</div>
-                    <div th:text="${solicitacao.categoria.descricao}"></div>
+                <div class="col-6 col-md-3">
+                    <div class="text-secondary mb-1" style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;">Categoria</div>
+                    <div th:text="${solicitacao.categoria.descricao}" style="font-size:.9rem;"></div>
                 </div>
-                <div class="col-md-4">
-                    <div class="text-secondary" style="font-size:.8rem;text-transform:uppercase;font-weight:600;">Prioridade</div>
-                    <span class="badge-status"
+                <div class="col-6 col-md-3">
+                    <div class="text-secondary mb-1" style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;">Prioridade</div>
+                    <span class="bs"
                           th:classappend="'p-' + ${#strings.toLowerCase(solicitacao.prioridade.name())}"
                           th:text="${solicitacao.prioridade.name()}">
                     </span>
                 </div>
-                <div class="col-md-4">
-                    <div class="text-secondary" style="font-size:.8rem;text-transform:uppercase;font-weight:600;">Solicitante</div>
-                    <div th:text="${solicitacao.solicitante.nome}"></div>
+                <div class="col-6 col-md-3">
+                    <div class="text-secondary mb-1" style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;">Data de Abertura</div>
+                    <div th:text="${#temporals.format(solicitacao.dataAbertura,'dd/MM/yyyy HH:mm')}" style="font-size:.9rem;"></div>
                 </div>
-                <div class="col-md-4">
-                    <div class="text-secondary" style="font-size:.8rem;text-transform:uppercase;font-weight:600;">Data de Abertura</div>
-                    <div th:text="${#temporals.format(solicitacao.dataAbertura,'dd/MM/yyyy HH:mm')}"></div>
-                </div>
-                <div class="col-md-4">
-                    <div class="text-secondary" style="font-size:.8rem;text-transform:uppercase;font-weight:600;">Previsão (SLA)</div>
-                    <div th:text="${#temporals.format(solicitacao.prazoAlvo,'dd/MM/yyyy HH:mm')}"
-                         th:classappend="${solicitacao.prazoAlvo.isBefore(agora)} ? 'sla-atrasado' : 'sla-ok'">
+                <div class="col-6 col-md-3">
+                    <div class="text-secondary mb-1" style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;">Previsão (SLA)</div>
+                    <div style="font-size:.9rem;"
+                         th:text="${#temporals.format(solicitacao.prazoAlvo,'dd/MM/yyyy HH:mm')}"
+                         th:class="${solicitacao.prazoAlvo.isBefore(agora)} ? 'sla-late' : 'sla-ok'">
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="text-secondary" style="font-size:.8rem;text-transform:uppercase;font-weight:600;">Localização</div>
-                    <div th:text="${solicitacao.localizacao ?: '—'}"></div>
                 </div>
             </div>
 
-            <div class="mb-4">
-                <div class="text-secondary mb-1" style="font-size:.8rem;text-transform:uppercase;font-weight:600;">Descrição</div>
-                <div class="bg-light rounded p-3" th:text="${solicitacao.descricao}"></div>
+            <!-- Descrição -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <div class="text-secondary mb-1" style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;">Localização</div>
+                    <div th:text="${solicitacao.localizacao ?: '—'}" style="font-size:.9rem;"></div>
+                </div>
+                <div class="col-md-8">
+                    <div class="text-secondary mb-1" style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;">Descrição</div>
+                    <div th:text="${solicitacao.descricao}" style="font-size:.9rem; color:#374151;"></div>
+                </div>
             </div>
 
             <!-- Histórico -->
             <div th:if="${not #lists.isEmpty(solicitacao.historico)}">
-                <div class="text-secondary mb-2" style="font-size:.8rem;text-transform:uppercase;font-weight:600;">Histórico de Status</div>
+                <div class="text-secondary mb-2" style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;">Histórico de Status</div>
                 <ul class="timeline">
                     <li th:each="h : ${solicitacao.historico}"
                         th:classappend="'s-' + ${#strings.toLowerCase(h.statusNovo.name())}">
                         <div>
-                            <div style="font-size:.82rem;color:#888;" th:text="${#temporals.format(h.dataHora,'dd/MM/yyyy HH:mm')}"></div>
-                            <span class="badge-status me-1"
+                            <div style="font-size:.78rem;color:#94a3b8;margin-bottom:.2rem;"
+                                 th:text="${#temporals.format(h.dataHora,'dd/MM/yyyy HH:mm')}">
+                            </div>
+                            <span class="bs me-2"
                                   th:classappend="'s-' + ${#strings.toLowerCase(h.statusNovo.name())}"
                                   th:text="${h.statusNovo.name().replace('_',' ')}">
                             </span>
-                            <span style="font-size:.88rem;" th:text="${h.comentario}"></span>
+                            <span style="font-size:.87rem;color:#374151;" th:text="${h.comentario}"></span>
                         </div>
                     </li>
                 </ul>
