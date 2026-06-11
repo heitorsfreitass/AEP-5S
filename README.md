@@ -1,100 +1,147 @@
-# AEP-5S
+# AEP-5S — ObservaAção
 
-Sistema em Java para registro e acompanhamento de solicitações urbanas via console.
+Sistema de registro e acompanhamento de solicitações urbanas desenvolvido para a AEP do curso de Engenharia de Software (ESOFT5S).
 
-## Visão geral
+---
 
-O projeto simula o fluxo de atendimento entre cidadão e servidor público:
+## Branches
 
-- o cidadão abre solicitações e consulta o andamento;
-- o servidor atualiza status e acompanha a fila por SLA;
-- os dados ficam em memória durante a execução e são persistidos em `solicitacoes.txt`.
+| Branch | Descrição |
+|---|---|
+| `master` | Versão CLI em Java puro (1ª entrega) |
+| `testespring` | Versão web com Spring Boot + H2 + Thymeleaf (2ª entrega) |
 
-## Funcionalidades
+---
 
-- Cadastro de solicitações pelo cidadão (identificado ou anônimo)
-- Consulta por protocolo
-- Atualização de status pelo servidor
-- Filtros por prioridade, categoria e bairro
-- Fila de atendimento com foco em SLA
-- Carga inicial automática de dados (seeder)
+## Versão Web — Spring Boot (branch `testespring`)
 
-## Tecnologias usadas
+### Tecnologias
 
-- Java
-- JDK (compilação e execução)
-- Interface de console
-- Persistência em arquivo TXT
+- Java 17
+- Spring Boot 3.2.5
+- Spring Data JPA
+- Banco H2 (in-memory)
+- Thymeleaf
+- Bootstrap 5.3
 
-## Regras principais
+### Funcionalidades
+
+- Dashboard com resumo geral (total, abertas, em execução, resolvidas)
+- Nova solicitação (identificado ou anônimo, com categoria, prioridade, localização)
+- Consulta por protocolo com histórico de status em timeline
+- Painel do servidor com filtros por status, prioridade, categoria e bairro
+- Atualização de status via modal com comentário obrigatório
+- Fila de atendimento ordenada por SLA (prazo alvo)
+- Dados de exemplo carregados automaticamente ao iniciar
+
+### Pré-requisitos
+
+- JDK 17 ou superior instalado
+- Maven (ou usar o `mvnw` incluso no projeto)
+
+### Credenciais de acesso (mockadas)
+
+| Tipo | Login | Senha | Nome exibido |
+|---|---|---|---|
+| Cidadão | `joao` | `123` | João Silva |
+| Cidadão | `maria` | `123` | Maria Souza |
+| Cidadão | `carlos` | `123` | Carlos Lima |
+| Admin | `admin` | `admin123` | Administrador |
+| Admin | `gestor` | `admin123` | Gestor Municipal |
+
+> Cidadãos são redirecionados ao **Dashboard** após login.
+> Admins são redirecionados ao **Painel do Servidor**. Apenas admins acessam `/servidor` e `/sla`.
+
+### Como rodar
+
+```bash
+# 1. Clone o repositório
+git clone https://github.com/heitorsfreitass/AEP-5S.git
+cd AEP-5S
+
+# 2. Mude para a branch
+git checkout testespring
+
+# 3. Entre na pasta do projeto Spring
+cd web
+
+# 4. Rode com Maven Wrapper (não precisa ter Maven instalado)
+./mvnw spring-boot:run       # Linux / Mac
+./mvnw.cmd spring-boot:run   # Windows
+```
+
+> **Windows (PowerShell):**
+> ```powershell
+> cd web
+> ./mvnw.cmd spring-boot:run
+> ```
+
+5. Acesse no navegador: **http://localhost:8080**
+
+### Telas disponíveis
+
+| Rota | Tela |
+|---|---|
+| `/` | Dashboard |
+| `/solicitacao` | Abrir nova solicitação |
+| `/protocolo?protocolo=OA-...` | Consultar protocolo |
+| `/servidor` | Painel do servidor |
+| `/sla` | Fila de atendimento (SLA) |
+| `/h2-console` | Console do banco H2 (dev) |
+
+### Estrutura do projeto web
+
+```
+web/
+├── src/main/java/com/aep5s/
+│   ├── WebApplication.java
+│   ├── config/          # DataSeeder (dados de exemplo)
+│   ├── controllers/     # SolicitacaoController, HomeController, UsuarioController
+│   ├── services/        # SolicitacaoService, UsuarioService, FilaAtendimentoService
+│   ├── repositories/    # SolicitacaoRepository, UsuarioRepository
+│   ├── models/          # Solicitacao, Usuario, HistoricoStatus
+│   └── enums/           # Categoria, Prioridade, StatusSolicitacao
+└── src/main/resources/
+    ├── application.properties
+    ├── static/css/style.css
+    └── templates/       # dashboard, solicitacao, protocolo, servidor, sla, sucesso
+```
+
+---
+
+## Versão CLI — Java puro (branch `master`)
+
+Interface de console para registro e acompanhamento de solicitações.
+
+### Como executar (Windows)
+
+```powershell
+git checkout master
+New-Item -ItemType Directory -Path ".\bin" -Force | Out-Null
+javac -d ".\bin" (Get-ChildItem -Path ".\src" -Recurse -Filter "*.java").FullName
+java -cp ".\bin" Main
+```
+
+---
+
+## Regras de negócio
 
 ### Categorias
+`ILUMINACAO`, `BURACO`, `LIMPEZA`, `SAUDE`, `PODA`, `VAZAMENTO`, `ASSEDIO`, `SEGURANCA`, `OUTRO`
 
-Aceita **número ou nome** no cadastro:
+### Prioridades e SLA
+| Prioridade | Prazo alvo |
+|---|---|
+| URGENTE | 4 horas |
+| ALTA | 24 horas |
+| MEDIA | 48 horas |
+| BAIXA | 72 horas |
 
-- `ILUMINACAO`, `BURACO`, `LIMPEZA`, `SAUDE`, `ASSEDIO`, `INJURIA`, `CRIME`, `OUTRO`
+### Fluxo de status
+`ABERTO` → `TRIAGEM` → `EM_EXECUCAO` → `RESOLVIDO` → `ENCERRADO`
 
-### Prioridades
-
-- `BAIXA` (72h)
-- `MEDIA` (48h)
-- `ALTA` (24h)
-- `URGENTE` (4h)
-
-### Status
-
-- `ABERTO`
-- `TRIAGEM`
-- `EM_EXECUCAO`
-- `RESOLVIDO`
-- `ENCERRADO`
-
-## Estrutura (resumo)
-
-```text
-src/
-├── Main.java
-├── UI/              # Menus e interação no console
-├── Services/        # Regras de negócio
-├── Repositories/    # Dados em memória
-├── Storage/         # Leitura/gravação em TXT
-├── Models/          # Entidades
-└── Enums/           # Categoria, prioridade e status
-```
-
-## Requisitos
-
-- JDK instalado
-- Terminal (PowerShell, CMD ou similar)
-
-## Como executar (Windows)
-
-1. Clone o repositorio:
-
-```powershell
-git clone https://github.com/heitorsfreitass/AEP-5S.git
-```
-
-2. Entre na pasta do projeto clonado e execute no PowerShell:
-
-```powershell
-New-Item -ItemType Directory -Path ".\bin" -Force | Out-Null; javac -d ".\bin" (Get-ChildItem -Path ".\src" -Recurse -Filter "*.java").FullName; java -cp ".\bin" Main
-```
-
-## Fluxo rapido de uso
-
-1. Cidadao registra uma solicitacao no painel de atendimento.
-2. Servidor consulta o protocolo e atualiza o status.
-3. Sistema ordena a fila por SLA e salva os dados ao sair.
-
-## Persistência
-
-- O sistema tenta carregar `solicitacoes.txt` na inicialização.
-- Se o arquivo estiver ausente/vazio, o sistema cria dados iniciais automaticamente.
-- Ao sair, salva as solicitações no mesmo arquivo.
-
-> Execute o sistema a partir da pasta `AEP-5S` para manter o arquivo no local esperado.
+---
 
 ## Licença
 
-Projeto acadêmico/educacional.
+Projeto acadêmico — ESOFT5S / 2026.

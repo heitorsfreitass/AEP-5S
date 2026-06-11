@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Login')}"></head>
+<body>
+
+<div class="login-wrapper">
+    <div class="login-card">
+
+        <!-- Logo -->
+        <div class="login-logo">
+            <i class="bi bi-bank2"></i>
+            Sistema de Solicitações Urbanas
+        </div>
+
+        <h4 class="login-title">Bem-vindo de volta</h4>
+        <p class="login-sub">Informe suas credenciais para acessar</p>
+
+        <!-- Toggle Cidadão / Admin -->
+        <div class="tab-tipo">
+            <input type="radio" name="tipoLogin" id="tab-cidadao" value="cidadao" checked>
+            <label for="tab-cidadao">
+                <i class="bi bi-person-fill me-1"></i>Cidadão
+            </label>
+            <input type="radio" name="tipoLogin" id="tab-admin" value="admin">
+            <label for="tab-admin">
+                <i class="bi bi-shield-lock-fill me-1"></i>Administrador
+            </label>
+        </div>
+
+        <!-- Erro -->
+        <div th:if="${erroMsg}" class="alert alert-danger py-2 mb-3" style="font-size:.9rem;">
+            <i class="bi bi-exclamation-circle-fill me-1"></i>
+            <span th:text="${erroMsg}"></span>
+        </div>
+
+        <!-- Formulário -->
+        <form action="/login" method="post">
+            <input type="hidden" name="next" th:value="${next}">
+
+            <div class="mb-3">
+                <label class="form-label" for="login">Login</label>
+                <input type="text" class="form-control" id="login" name="login"
+                       placeholder="Digite seu login" autofocus required>
+            </div>
+            <div class="mb-4">
+                <label class="form-label" for="senha">Senha</label>
+                <div class="position-relative">
+                    <input type="password" class="form-control" id="senha" name="senha"
+                           placeholder="Digite sua senha" required>
+                    <button type="button"
+                            class="btn btn-sm position-absolute end-0 top-50 translate-middle-y me-1"
+                            style="background:none;border:none;color:#9ca3af;"
+                            onclick="toggleSenha()">
+                        <i class="bi bi-eye" id="olhoIcon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 py-2 mb-3">
+                Entrar
+            </button>
+        </form>
+
+        <!-- Dica de credenciais -->
+        <div id="dica-cidadao" class="dica-login">
+            <div class="dica-titulo"><i class="bi bi-info-circle me-1"></i>Contas de Cidadão</div>
+            <div class="dica-linha"><span class="dica-label">joao</span> / <span class="dica-senha">123</span> — João Silva</div>
+            <div class="dica-linha"><span class="dica-label">maria</span> / <span class="dica-senha">123</span> — Maria Souza</div>
+            <div class="dica-linha"><span class="dica-label">carlos</span> / <span class="dica-senha">123</span> — Carlos Lima</div>
+        </div>
+        <div id="dica-admin" class="dica-login d-none">
+            <div class="dica-titulo"><i class="bi bi-shield-lock me-1"></i>Contas de Administrador</div>
+            <div class="dica-linha"><span class="dica-label">admin</span> / <span class="dica-senha">admin123</span> — Administrador</div>
+            <div class="dica-linha"><span class="dica-label">gestor</span> / <span class="dica-senha">admin123</span> — Gestor Municipal</div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+.dica-login  { background:#f8fafc; border:1px solid #e5e7eb; border-radius:10px;
+               padding:.9rem 1rem; font-size:.83rem; }
+.dica-titulo { font-weight:700; color:#374151; margin-bottom:.45rem; }
+.dica-linha  { color:#6b7280; margin-bottom:.2rem; }
+.dica-label  { font-family:monospace; background:#e5e7eb; padding:.1em .4em;
+               border-radius:4px; color:#111827; font-weight:700; }
+.dica-senha  { font-family:monospace; color:#2563eb; font-weight:600; }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.querySelectorAll('input[name="tipoLogin"]').forEach(r =>
+        r.addEventListener('change', () => {
+            const isAdmin = r.value === 'admin';
+            document.getElementById('dica-cidadao').classList.toggle('d-none',  isAdmin);
+            document.getElementById('dica-admin').classList.toggle('d-none', !isAdmin);
+        })
+    );
+    function toggleSenha() {
+        const input = document.getElementById('senha');
+        const icon  = document.getElementById('olhoIcon');
+        const show  = input.type === 'password';
+        input.type  = show ? 'text' : 'password';
+        icon.className = show ? 'bi bi-eye-slash' : 'bi bi-eye';
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Dashboard')}"></head>
+<body>
+
+<nav th:replace="~{fragments/navbar :: navbar}"></nav>
+
+<div class="container py-4">
+
+    <!-- ── Hero ── -->
+    <div class="hero-card mb-4">
+        <div style="flex:1;">
+            <h2>Bem-vindo ao Sistema de<br>Solicitações Urbanas</h2>
+            <p>Aqui você pode abrir novas solicitações,<br>acompanhar protocolos e consultar informações.</p>
+        </div>
+
+        <!-- Ilustração flat de cidade -->
+        <svg viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg"
+             style="width:260px;flex-shrink:0;">
+
+            <!-- Céu -->
+            <rect width="320" height="180" fill="#e0f2fe" rx="10"/>
+
+            <!-- Nuvens -->
+            <g opacity=".9">
+                <ellipse cx="55"  cy="35" rx="26" ry="11" fill="#fff"/>
+                <ellipse cx="75"  cy="28" rx="20" ry="10" fill="#fff"/>
+                <ellipse cx="38"  cy="32" rx="18" ry="9"  fill="#fff"/>
+                <ellipse cx="245" cy="38" rx="22" ry="10" fill="#fff"/>
+                <ellipse cx="265" cy="30" rx="18" ry="9"  fill="#fff"/>
+                <ellipse cx="228" cy="34" rx="16" ry="8"  fill="#fff"/>
+            </g>
+
+            <!-- Chão verde -->
+            <rect x="0" y="148" width="320" height="32" fill="#4ade80" rx="0"/>
+            <rect x="0" y="150" width="320" height="30" fill="#22c55e" opacity=".45"/>
+            <!-- Calçada -->
+            <rect x="0" y="148" width="320" height="5" fill="#d1d5db"/>
+
+            <!-- Árvore esquerda -->
+            <rect x="14" y="118" width="9"  height="30" fill="#16a34a" rx="2"/>
+            <ellipse cx="18"  cy="112" rx="16" ry="17" fill="#22c55e"/>
+            <ellipse cx="18"  cy="108" rx="13" ry="14" fill="#4ade80"/>
+
+            <!-- Árvore direita -->
+            <rect x="296" y="120" width="9" height="28" fill="#16a34a" rx="2"/>
+            <ellipse cx="301" cy="114" rx="15" ry="16" fill="#22c55e"/>
+            <ellipse cx="301" cy="110" rx="12" ry="13" fill="#4ade80"/>
+
+            <!-- Prédio esquerdo (médio, cinza-azul) -->
+            <rect x="44"  y="78" width="48" height="70" fill="#475569" rx="3"/>
+            <rect x="44"  y="72" width="48" height="10" fill="#334155" rx="2"/>
+            <!-- janelas -->
+            <rect x="50"  y="84" width="9" height="10" fill="#7dd3fc" rx="1" opacity=".85"/>
+            <rect x="63"  y="84" width="9" height="10" fill="#fde68a" rx="1" opacity=".85"/>
+            <rect x="76"  y="84" width="9" height="10" fill="#7dd3fc" rx="1" opacity=".85"/>
+            <rect x="50"  y="99" width="9" height="10" fill="#fde68a" rx="1" opacity=".85"/>
+            <rect x="63"  y="99" width="9" height="10" fill="#7dd3fc" rx="1" opacity=".85"/>
+            <rect x="76"  y="99" width="9" height="10" fill="#7dd3fc" rx="1" opacity=".85"/>
+            <rect x="50" y="114" width="9" height="10" fill="#7dd3fc" rx="1" opacity=".85"/>
+            <rect x="63" y="114" width="9" height="10" fill="#fde68a" rx="1" opacity=".85"/>
+            <rect x="76" y="114" width="9" height="10" fill="#7dd3fc" rx="1" opacity=".85"/>
+            <!-- porta -->
+            <rect x="60" y="133" width="16" height="15" fill="#1e293b" rx="1"/>
+
+            <!-- Prédio central (alto, azul principal) -->
+            <rect x="118" y="38" width="84" height="110" fill="#2563eb" rx="3"/>
+            <rect x="118" y="30" width="84" height="12"  fill="#1d4ed8" rx="2"/>
+            <!-- antena -->
+            <rect x="157" y="18" width="5"  height="14" fill="#1e40af"/>
+            <circle cx="159" cy="17" r="4"  fill="#3b82f6"/>
+            <!-- janelas -->
+            <rect x="127" y="44" width="12" height="13" fill="#bfdbfe" rx="1" opacity=".9"/>
+            <rect x="145" y="44" width="12" height="13" fill="#fde68a" rx="1" opacity=".9"/>
+            <rect x="163" y="44" width="12" height="13" fill="#bfdbfe" rx="1" opacity=".9"/>
+            <rect x="181" y="44" width="12" height="13" fill="#bfdbfe" rx="1" opacity=".9"/>
+
+            <rect x="127" y="63" width="12" height="13" fill="#fde68a" rx="1" opacity=".9"/>
+            <rect x="145" y="63" width="12" height="13" fill="#bfdbfe" rx="1" opacity=".9"/>
+            <rect x="163" y="63" width="12" height="13" fill="#bfdbfe" rx="1" opacity=".9"/>
+            <rect x="181" y="63" width="12" height="13" fill="#fde68a" rx="1" opacity=".9"/>
+
+            <rect x="127" y="82" width="12" height="13" fill="#bfdbfe" rx="1" opacity=".9"/>
+            <rect x="145" y="82" width="12" height="13" fill="#fde68a" rx="1" opacity=".9"/>
+            <rect x="163" y="82" width="12" height="13" fill="#bfdbfe" rx="1" opacity=".9"/>
+            <rect x="181" y="82" width="12" height="13" fill="#bfdbfe" rx="1" opacity=".9"/>
+
+            <rect x="127"y="101" width="12" height="13" fill="#bfdbfe" rx="1" opacity=".9"/>
+            <rect x="145"y="101" width="12" height="13" fill="#bfdbfe" rx="1" opacity=".9"/>
+            <rect x="163"y="101" width="12" height="13" fill="#fde68a" rx="1" opacity=".9"/>
+            <rect x="181"y="101" width="12" height="13" fill="#bfdbfe" rx="1" opacity=".9"/>
+            <!-- porta central -->
+            <rect x="145" y="129" width="30" height="19" fill="#1e40af" rx="2"/>
+
+            <!-- Prédio direito (menor, acinzentado) -->
+            <rect x="228" y="90" width="52" height="58" fill="#64748b" rx="3"/>
+            <rect x="228" y="83" width="52" height="11" fill="#475569" rx="2"/>
+            <!-- janelas -->
+            <rect x="235" y="96" width="10" height="11" fill="#bae6fd" rx="1" opacity=".85"/>
+            <rect x="250" y="96" width="10" height="11" fill="#fde68a" rx="1" opacity=".85"/>
+            <rect x="265" y="96" width="10" height="11" fill="#bae6fd" rx="1" opacity=".85"/>
+            <rect x="235"y="113" width="10" height="11" fill="#fde68a" rx="1" opacity=".85"/>
+            <rect x="250"y="113" width="10" height="11" fill="#bae6fd" rx="1" opacity=".85"/>
+            <rect x="265"y="113" width="10" height="11" fill="#bae6fd" rx="1" opacity=".85"/>
+            <rect x="235"y="130" width="10" height="11" fill="#bae6fd" rx="1" opacity=".85"/>
+            <rect x="265"y="130" width="10" height="11" fill="#fde68a" rx="1" opacity=".85"/>
+        </svg>
+    </div>
+
+    <!-- ── Ações rápidas ── -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="action-card">
+                <div class="ac-icon-wrap ac-blue"><i class="bi bi-file-earmark-plus-fill"></i></div>
+                <h6>Nova Solicitação</h6>
+                <p>Abra uma nova solicitação de serviço urbano.</p>
+                <a href="/solicitacao" class="btn btn-primary">Abrir</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="action-card">
+                <div class="ac-icon-wrap ac-green"><i class="bi bi-search"></i></div>
+                <h6>Consultar Protocolo</h6>
+                <p>Acompanhe o status da sua solicitação.</p>
+                <a href="/protocolo" class="btn btn-success">Consultar</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="action-card">
+                <div class="ac-icon-wrap ac-yellow"><i class="bi bi-person-gear"></i></div>
+                <h6>Área do Servidor</h6>
+                <p>Acesse a área administrativa do sistema.</p>
+                <a href="/servidor" class="btn btn-warning">Acessar</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Resumo Geral ── -->
+    <p class="section-label">Resumo Geral</p>
+    <div class="row g-3">
+        <div class="col-6 col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon si-blue"><i class="bi bi-clipboard2-data-fill"></i></div>
+                <div>
+                    <div class="stat-val" th:text="${total}">0</div>
+                    <div class="stat-lbl">Total de Solicitações</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon si-orange"><i class="bi bi-folder2-open"></i></div>
+                <div>
+                    <div class="stat-val" th:text="${abertas}">0</div>
+                    <div class="stat-lbl">Abertas</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon si-teal"><i class="bi bi-gear-fill"></i></div>
+                <div>
+                    <div class="stat-val" th:text="${emExec}">0</div>
+                    <div class="stat-lbl">Em Execução</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon si-green"><i class="bi bi-check-circle-fill"></i></div>
+                <div>
+                    <div class="stat-val" th:text="${resolvidas}">0</div>
+                    <div class="stat-lbl">Resolvidas</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

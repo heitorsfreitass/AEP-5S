@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Área do Servidor')}"></head>
+<body>
+
+<nav th:replace="~{fragments/navbar :: navbar}"></nav>
+
+<div class="container py-4">
+
+    <div class="d-flex justify-content-between align-items-start mb-1">
+        <div>
+            <h4 class="fw-bold mb-1">Área do Servidor</h4>
+            <p class="text-secondary mb-4" style="font-size:.92rem;">
+                Gerencie e acompanhe as solicitações registradas.
+            </p>
+        </div>
+        <a href="/sla" class="btn btn-outline-secondary btn-sm mt-1">
+            <i class="bi bi-clock-history me-1"></i>Fila SLA
+        </a>
+    </div>
+
+    <!-- Alertas -->
+    <div th:if="${sucesso}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i><span th:text="${sucesso}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    <div th:if="${erro}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i><span th:text="${erro}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
+    <!-- Filtros -->
+    <div class="card mb-3">
+        <div class="card-body p-3">
+            <form action="/servidor" method="get">
+                <div class="row g-2 align-items-end">
+                    <div class="col-md-2">
+                        <label class="form-label mb-1" style="font-size:.8rem;">Status</label>
+                        <select class="form-select form-select-sm" name="status">
+                            <option value="">Todos</option>
+                            <option th:each="s : ${statusList}"
+                                    th:value="${s.name()}"
+                                    th:text="${s.name().replace('_',' ')}"
+                                    th:selected="${param.status != null and param.status[0] == s.name()}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label mb-1" style="font-size:.8rem;">Prioridade</label>
+                        <select class="form-select form-select-sm" name="prioridade">
+                            <option value="">Todas</option>
+                            <option th:each="p : ${prioridades}"
+                                    th:value="${p.name()}"
+                                    th:text="${p.name()}"
+                                    th:selected="${param.prioridade != null and param.prioridade[0] == p.name()}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label mb-1" style="font-size:.8rem;">Categoria</label>
+                        <select class="form-select form-select-sm" name="categoria">
+                            <option value="">Todas</option>
+                            <option th:each="c : ${categorias}"
+                                    th:value="${c.name()}"
+                                    th:text="${c.descricao}"
+                                    th:selected="${param.categoria != null and param.categoria[0] == c.name()}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label mb-1" style="font-size:.8rem;">Bairro</label>
+                        <input type="text" class="form-control form-control-sm" name="bairro"
+                               placeholder="Digite o bairro"
+                               th:value="${param.bairro != null ? param.bairro[0] : ''}">
+                    </div>
+                    <div class="col-md-3 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary btn-sm px-3">
+                            <i class="bi bi-funnel-fill me-1"></i>Filtrar
+                        </button>
+                        <a href="/servidor" class="btn btn-outline-secondary btn-sm">Limpar</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tabela -->
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>Protocolo</th>
+                        <th>Categoria</th>
+                        <th>Solicitante</th>
+                        <th>Prioridade</th>
+                        <th>Status</th>
+                        <th>SLA</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${#lists.isEmpty(solicitacoes)}">
+                        <td colspan="7" class="text-center text-secondary py-5">
+                            <i class="bi bi-inbox fs-3 d-block mb-2"></i>
+                            Nenhuma solicitação encontrada.
+                        </td>
+                    </tr>
+                    <tr th:each="s : ${solicitacoes}">
+                        <td class="fw-semibold" style="font-size:.85rem;"
+                            th:text="${s.protocolo}"></td>
+                        <td th:text="${s.categoria.descricao}"></td>
+                        <td th:text="${s.solicitante.nome}"></td>
+                        <td>
+                            <span class="bs"
+                                  th:classappend="'p-' + ${#strings.toLowerCase(s.prioridade.name())}"
+                                  th:text="${s.prioridade.name()}">
+                            </span>
+                        </td>
+                        <td>
+                            <span class="bs"
+                                  th:classappend="'s-' + ${#strings.toLowerCase(s.status.name())}"
+                                  th:text="${s.status.name().replace('_',' ')}">
+                            </span>
+                        </td>
+                        <td style="font-size:.88rem;"
+                            th:text="${#temporals.format(s.prazoAlvo,'dd/MM/yyyy HH:mm')}"
+                            th:class="${s.prazoAlvo.isBefore(agora)} ? 'sla-late' : 'sla-ok'">
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modalAtualizar"
+                                    th:attr="data-protocolo=${s.protocolo},data-status=${s.status.name()}">
+                                Atualizar <i class="bi bi-chevron-down"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<!-- Modal Atualizar Status -->
+<div class="modal fade" id="modalAtualizar" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-pencil-square me-2"></i>Atualizar Status
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="/servidor/atualizar" method="post">
+                <div class="modal-body p-4">
+                    <input type="hidden" name="protocolo" id="modalProtocolo">
+                    <div class="mb-3">
+                        <label class="form-label">Novo Status</label>
+                        <select class="form-select" name="novoStatus" id="modalNovoStatus" required>
+                            <option th:each="s : ${statusList}"
+                                    th:value="${s.name()}"
+                                    th:text="${s.name().replace('_',' ')}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Responsável</label>
+                        <input type="text" class="form-control" name="responsavel"
+                               placeholder="Nome do responsável" required>
+                    </div>
+                    <div class="mb-1">
+                        <label class="form-label">
+                            Comentário <span class="text-danger">*</span>
+                        </label>
+                        <textarea class="form-control" name="comentario" rows="3"
+                                  placeholder="Descreva a atualização..." required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-outline-secondary"
+                            data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary px-4">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.getElementById('modalAtualizar').addEventListener('show.bs.modal', function(e) {
+        const btn = e.relatedTarget;
+        document.getElementById('modalProtocolo').value = btn.dataset.protocolo;
+        const sel = document.getElementById('modalNovoStatus');
+        for (let opt of sel.options) opt.selected = opt.value === btn.dataset.status;
+    });
+</script>
+</body>
+</html>

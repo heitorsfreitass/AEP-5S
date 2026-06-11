@@ -32,3 +32,10 @@ bin/
 
 ## Storage ###
 solicitacoes.txt
+
+## Logs ###
+app.log
+*.log
+
+## Maven build ###
+web/target/
